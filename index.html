@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shoes of Hope Registration — Least of These Carolinas</title>
+  <meta name="description" content="Register a child for the Shoes of Hope program from Least of These Carolinas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lotc-red:   #c22035;
+      --lotc-blue:  #86b2d3;
+      --lotc-grey:  #a7a8a3;
+      --lotc-black: #060511;
+      --bg:         #f6f6f6;
+      --card-bg:    #ffffff;
+      --border:     #e5e5e5;
+      --text:       #1f1f23;
+      --text-muted: #4a4a4a;
+      --focus-ring: #86b2d3;
+      --error:      #b91c1c;
+      --success:    #15803d;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { color: var(--lotc-red); }
+    main { display: block; }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      background: var(--lotc-black); color: #fff;
+      padding: 8px 12px; z-index: 1000;
+    }
+    .skip-link:focus { left: 12px; top: 12px; }
+
+    .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 96px; }
+
+    .site-header {
+      background: var(--lotc-red); color: #fff;
+      padding: 28px 16px; text-align: center;
+    }
+    .site-header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.4px; }
+    .site-header p { margin: 6px 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.85); }
+
+    .intro {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; margin: 24px 0;
+    }
+    .intro h2 { margin: 0 0 8px; font-size: 18px; color: var(--lotc-black); }
+    .intro p { margin: 8px 0 0; color: var(--text-muted); font-size: 14px; }
+
+    fieldset {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; margin: 0 0 20px;
+    }
+    legend {
+      font-weight: 600; font-size: 15px; color: var(--lotc-black);
+      padding: 0 6px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    legend .legend-num {
+      display: inline-block; width: 22px; height: 22px;
+      line-height: 22px; text-align: center;
+      background: var(--lotc-red); color: #fff; border-radius: 50%;
+      font-size: 12px; margin-right: 8px; vertical-align: middle;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+    @media (min-width: 640px) {
+      .field-row.two-col { grid-template-columns: 1fr 1fr; }
+      .field-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 14px; font-weight: 500; color: var(--lotc-black); }
+    label .req { color: var(--lotc-red); margin-left: 2px; }
+    .hint { font-size: 12px; color: var(--text-muted); }
+
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="number"], input[type="date"], select, textarea {
+      font: inherit; color: var(--text); width: 100%;
+      padding: 10px 12px; border: 1px solid var(--border);
+      background: #fff; border-radius: 8px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      min-height: 44px;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+      outline: none; border-color: var(--focus-ring);
+      box-shadow: 0 0 0 3px rgba(134, 178, 211, 0.35);
+    }
+    input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+      border-color: var(--error);
+    }
+    .field-error { color: var(--error); font-size: 12px; min-height: 1em; }
+
+    .checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; }
+    .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 2px 0 0; }
+    .checkbox-row label { font-weight: 400; color: var(--text-muted); font-size: 13px; }
+
+    .actions { margin-top: 24px; display: flex; gap: 12px; flex-direction: column; }
+    @media (min-width: 640px) { .actions { flex-direction: row; justify-content: flex-end; } }
+
+    button {
+      font: inherit; cursor: pointer; border-radius: 8px;
+      padding: 12px 20px; border: 1px solid transparent;
+      font-weight: 600; font-size: 15px; min-height: 48px;
+    }
+    button[type="submit"] { background: var(--lotc-red); color: #fff; }
+    button[type="submit"]:hover:not(:disabled) { background: #a31b2d; }
+    button[type="submit"]:disabled { background: var(--lotc-grey); cursor: not-allowed; }
+
+    .status { margin-top: 16px; padding: 14px 16px; border-radius: 8px; font-size: 14px; }
+    .status[hidden] { display: none !important; }
+    .status.error { background: #fee2e2; color: var(--error); border: 1px solid #fecaca; }
+    .status.success { background: #dcfce7; color: var(--success); border: 1px solid #bbf7d0; }
+
+    .submission-id {
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px;
+    }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    .site-footer { text-align: center; color: var(--lotc-grey); font-size: 12px; padding: 24px 16px 48px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#form-start">Skip to form</a>
+
+  <header class="site-header" role="banner">
+    <h1>Shoes of Hope Registration</h1>
+    <p>Least of These Carolinas</p>
+  </header>
+
+  <main id="main" class="container">
+    <section class="intro" aria-labelledby="intro-heading">
+      <h2 id="intro-heading">Register a child for shoes</h2>
+      <p>This form takes about 5&ndash;7 minutes. You'll choose a shoe size and underwear size based on the child's gender. We'll email a confirmation when your registration is received.</p>
+      <p>Required fields are marked with <span aria-hidden="true" style="color:var(--lotc-red)">*</span>.</p>
+    </section>
+
+    <form id="soh-form" novalidate aria-describedby="form-status" autocomplete="on">
+      <h2 id="form-start" class="sr-only">Shoes of Hope registration form</h2>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">1</span>Caregiver information</legend>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="relationship">Your relationship to the child<span class="req" aria-hidden="true">*</span></label>
+            <select id="relationship" name="relationship" required aria-required="true">
+              <option value="">Select one</option>
+              <option>Foster Parent</option>
+              <option>Kinship Caregiver</option>
+              <option>Adoptive Parent</option>
+              <option>Biological Parent</option>
+              <option>Social Worker</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="relationship-error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="isLicensedFoster">Are you a licensed foster parent?<span class="req" aria-hidden="true">*</span></label>
+            <select id="isLicensedFoster" name="isLicensedFoster" required aria-required="true">
+              <option value="">Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+            <p class="field-error" id="isLicensedFoster-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="caregiverFirstName">Caregiver first name<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverFirstName" name="caregiverFirstName" type="text" autocomplete="given-name" required aria-required="true" />
+            <p class="field-error" id="caregiverFirstName-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="caregiverLastName">Caregiver last name<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverLastName" name="caregiverLastName" type="text" autocomplete="family-name" required aria-required="true" />
+            <p class="field-error" id="caregiverLastName-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="caregiverEmail">Email<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverEmail" name="caregiverEmail" type="email" autocomplete="email" required aria-required="true" />
+            <p class="hint">We'll send your confirmation here.</p>
+            <p class="field-error" id="caregiverEmail-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="caregiverPhone">Phone<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverPhone" name="caregiverPhone" type="tel" autocomplete="tel" required aria-required="true" />
+            <p class="field-error" id="caregiverPhone-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="caregiverStreet">Street address<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverStreet" name="caregiverStreet" type="text" autocomplete="street-address" required aria-required="true" />
+            <p class="field-error" id="caregiverStreet-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row three-col">
+          <div class="field">
+            <label for="caregiverCity">City<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverCity" name="caregiverCity" type="text" autocomplete="address-level2" required aria-required="true" />
+            <p class="field-error" id="caregiverCity-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="caregiverState">State<span class="req" aria-hidden="true">*</span></label>
+            <select id="caregiverState" name="caregiverState" required aria-required="true" autocomplete="address-level1">
+              <option value="">Select</option>
+              <option>NC</option>
+              <option>SC</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="caregiverState-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="caregiverZip">ZIP<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverZip" name="caregiverZip" type="text" inputmode="numeric" pattern="[0-9]{5}" autocomplete="postal-code" required aria-required="true" />
+            <p class="field-error" id="caregiverZip-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="caregiverCounty">County of residence<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverCounty" name="caregiverCounty" type="text" required aria-required="true" placeholder="e.g., Gaston, or York, SC" />
+            <p class="hint">NC counties: just the county name. Out-of-state: <strong>County, ST</strong> (e.g., York, SC).</p>
+            <p class="field-error" id="caregiverCounty-error" aria-live="polite"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">2</span>Child information</legend>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="childFirstName">Child first name<span class="req" aria-hidden="true">*</span></label>
+            <input id="childFirstName" name="childFirstName" type="text" required aria-required="true" />
+            <p class="field-error" id="childFirstName-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="childLastInitial">Child last initial<span class="req" aria-hidden="true">*</span></label>
+            <input id="childLastInitial" name="childLastInitial" type="text" maxlength="1" required aria-required="true" pattern="[A-Za-z]" />
+            <p class="hint">Privacy: only the first letter of the child's last name.</p>
+            <p class="field-error" id="childLastInitial-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row three-col">
+          <div class="field">
+            <label for="childAge">Age<span class="req" aria-hidden="true">*</span></label>
+            <input id="childAge" name="childAge" type="number" min="0" max="21" required aria-required="true" />
+            <p class="field-error" id="childAge-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="childGradeFall">Grade this fall</label>
+            <select id="childGradeFall" name="childGradeFall">
+              <option value="">Select</option>
+              <option>Pre-K</option>
+              <option>Kindergarten</option>
+              <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option>
+              <option>5th</option><option>6th</option><option>7th</option><option>8th</option>
+              <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="childGender">Gender<span class="req" aria-hidden="true">*</span></label>
+            <select id="childGender" name="childGender" required aria-required="true">
+              <option value="">Select</option>
+              <option value="Female">Girl</option>
+              <option value="Male">Boy</option>
+              <option value="Non-binary">Non-binary / Other</option>
+            </select>
+            <p class="field-error" id="childGender-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="childPlacementType">Placement type<span class="req" aria-hidden="true">*</span></label>
+            <select id="childPlacementType" name="childPlacementType" required aria-required="true">
+              <option value="">Select</option>
+              <option>Foster</option>
+              <option>Foster - Group Home placement</option>
+              <option>Kinship</option>
+              <option>Adoptive</option>
+              <option>Biological</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="childPlacementType-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="childCustodyCounty">Child's county of custody<span class="req" aria-hidden="true">*</span></label>
+            <input id="childCustodyCounty" name="childCustodyCounty" type="text" required aria-required="true" placeholder="e.g., Gaston, or York, SC" />
+            <p class="field-error" id="childCustodyCounty-error" aria-live="polite"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">3</span>Shoes</legend>
+        <p class="hint" style="margin-top:8px;">Choose the shoe category and size that best fits the child.</p>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="shoeGender">Will you be choosing shoes for a girl or boy?<span class="req" aria-hidden="true">*</span></label>
+            <select id="shoeGender" name="shoeGender" required aria-required="true">
+              <option value="">Select</option>
+              <option value="Girl">Girl</option>
+              <option value="Boy">Boy</option>
+            </select>
+            <p class="field-error" id="shoeGender-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row" id="girlShoeWrap" aria-hidden="true" hidden>
+          <div class="field">
+            <label for="girlShoeSize">Girl shoe size<span class="req" aria-hidden="true">*</span></label>
+            <select id="girlShoeSize" name="girlShoeSize">
+              <option value="">Select size</option>
+              <optgroup label="Toddler (2-4 yo)">
+                <option>Toddler 7</option><option>Toddler 8</option>
+                <option>Toddler 9</option><option>Toddler 10</option>
+              </optgroup>
+              <optgroup label="Little Girl (4-6 yo)">
+                <option>Little Girl 11c (4-6 yo)</option>
+                <option>Little Girl 12c (4-6 yo)</option>
+                <option>Little Girl 13c (4-6 yo)</option>
+                <option>Little Girl 1 (4-6 yo)</option>
+                <option>Little Girl 2 (4-6 yo)</option>
+              </optgroup>
+              <optgroup label="Big Girl (7-10 yo)">
+                <option>Big Girl 3</option><option>Big Girl 4</option>
+                <option>Big Girl 5</option><option>Big Girl 6</option>
+              </optgroup>
+              <optgroup label="Women's (11+ yo)">
+                <option>Women's 5</option><option>Women's 6</option>
+                <option>Women's 7</option><option>Women's 8</option>
+                <option>Women's 9</option><option>Women's 10</option>
+                <option>Women's 11</option>
+              </optgroup>
+            </select>
+            <p class="field-error" id="girlShoeSize-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row" id="boyShoeWrap" aria-hidden="true" hidden>
+          <div class="field">
+            <label for="boyShoeSize">Boy shoe size<span class="req" aria-hidden="true">*</span></label>
+            <select id="boyShoeSize" name="boyShoeSize">
+              <option value="">Select size</option>
+              <optgroup label="Toddler (2-4 yo)">
+                <option>Toddler 7</option><option>Toddler 8</option>
+                <option>Toddler 9</option><option>Toddler 10</option>
+              </optgroup>
+              <optgroup label="Little Boy (4-6 yo)">
+                <option>Little Boy 11c (4-6 yo)</option>
+                <option>Little Boy 12c (4-6 yo)</option>
+                <option>Little Boy 13c (4-6 yo)</option>
+                <option>Little Boy 1 (4-6 yo)</option>
+                <option>Little Boy 2 (4-6 yo)</option>
+              </optgroup>
+              <optgroup label="Big Boy (7-10 yo)">
+                <option>Big Boy 3</option><option>Big Boy 4</option>
+                <option>Big Boy 5</option><option>Big Boy 6</option>
+              </optgroup>
+              <optgroup label="Men's (11+ yo)">
+                <option>Men's 6</option><option>Men's 7</option>
+                <option>Men's 8</option><option>Men's 9</option>
+                <option>Men's 10</option><option>Men's 11</option>
+                <option>Men's 12</option>
+              </optgroup>
+            </select>
+            <p class="field-error" id="boyShoeSize-error" aria-live="polite"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">4</span>Underwear</legend>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="underwearGender">Will you be choosing underwear for a girl or boy?<span class="req" aria-hidden="true">*</span></label>
+            <select id="underwearGender" name="underwearGender" required aria-required="true">
+              <option value="">Select</option>
+              <option value="Girl">Girl</option>
+              <option value="Boy">Boy</option>
+            </select>
+            <p class="field-error" id="underwearGender-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row" id="girlsUnderwearWrap" aria-hidden="true" hidden>
+          <div class="field">
+            <label for="girlsUnderwearSize">Girls underwear size<span class="req" aria-hidden="true">*</span></label>
+            <select id="girlsUnderwearSize" name="girlsUnderwearSize">
+              <option value="">Select size</option>
+              <option>Girls 4 (waist 21" / 29-38lb)</option>
+              <option>Girls 6 (waist 23" / 39-49lb)</option>
+              <option>Girls 8 (waist 24" / 50-67lb)</option>
+              <option>Girls 10 (waist 26" / 68-79lb)</option>
+              <option>Girls 12 (waist 27" / 80-94lb)</option>
+              <option>Girls 14 (waist 28" / 95-111lb)</option>
+              <option>Girls 16 (waist 29" / 112-127lb)</option>
+            </select>
+            <p class="field-error" id="girlsUnderwearSize-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row" id="boysUnderwearWrap" aria-hidden="true" hidden>
+          <div class="field">
+            <label for="boysUnderwearSize">Boys underwear size<span class="req" aria-hidden="true">*</span></label>
+            <select id="boysUnderwearSize" name="boysUnderwearSize">
+              <option value="">Select size</option>
+              <option>Boys 4 (waist 21" / 29-38lb)</option>
+              <option>Boys 6 (waist 23" / 39-49lb)</option>
+              <option>Boys 8 (waist 24" / 50-67lb)</option>
+              <option>Boys 10 (waist 26" / 68-79lb)</option>
+              <option>Boys 12 (waist 27" / 80-94lb)</option>
+              <option>Boys 14 (waist 28" / 95-111lb)</option>
+              <option>Boys 16 (waist 29" / 112-127lb)</option>
+            </select>
+            <p class="field-error" id="boysUnderwearSize-error" aria-live="polite"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">5</span>Social worker</legend>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="hasSocialWorker">Does the child have a DSS social worker?<span class="req" aria-hidden="true">*</span></label>
+            <select id="hasSocialWorker" name="hasSocialWorker" required aria-required="true">
+              <option value="">Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+            <p class="field-error" id="hasSocialWorker-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div id="swWrap" aria-hidden="true" hidden>
+          <div class="field-row two-col">
+            <div class="field">
+              <label for="swFirstName">Social worker first name<span class="req" aria-hidden="true">*</span></label>
+              <input id="swFirstName" name="swFirstName" type="text" />
+              <p class="field-error" id="swFirstName-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="swLastName">Social worker last name<span class="req" aria-hidden="true">*</span></label>
+              <input id="swLastName" name="swLastName" type="text" />
+              <p class="field-error" id="swLastName-error" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field-row two-col">
+            <div class="field">
+              <label for="swEmail">Social worker email<span class="req" aria-hidden="true">*</span></label>
+              <input id="swEmail" name="swEmail" type="email" />
+              <p class="field-error" id="swEmail-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="swPhone">Social worker phone</label>
+              <input id="swPhone" name="swPhone" type="tel" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="swCounty">Social worker county of employment<span class="req" aria-hidden="true">*</span></label>
+              <input id="swCounty" name="swCounty" type="text" />
+              <p class="field-error" id="swCounty-error" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">6</span>Comments &amp; consent</legend>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="shoesOfHopeComments">Comments</label>
+            <textarea id="shoesOfHopeComments" name="shoesOfHopeComments" placeholder="Anything our team should know"></textarea>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="agreeToTerms" name="agreeToTerms" type="checkbox" required aria-required="true" />
+          <label for="agreeToTerms">
+            I confirm the information provided is accurate. I understand submitting this form does not guarantee a spot, and I agree to be contacted by Least of These Carolinas regarding this registration.<span class="req" aria-hidden="true">*</span>
+          </label>
+        </div>
+        <p class="field-error" id="agreeToTerms-error" aria-live="polite"></p>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" id="submitBtn">Submit registration</button>
+      </div>
+
+      <div id="form-status" class="status" role="status" aria-live="polite" hidden>
+        <span id="form-status-text"></span>
+        <span id="form-status-id" class="submission-id" hidden></span>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    &copy; Least of These Carolinas &middot; <a href="https://lotcarolinas.com">lotcarolinas.com</a>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var form = document.getElementById('soh-form');
+      var statusEl = document.getElementById('form-status');
+      var statusText = document.getElementById('form-status-text');
+      var statusId = document.getElementById('form-status-id');
+      var submitBtn = document.getElementById('submitBtn');
+
+      function show(el) {
+        el.hidden = false;
+        el.setAttribute('aria-hidden', 'false');
+      }
+      function hide(el) {
+        el.hidden = true;
+        el.setAttribute('aria-hidden', 'true');
+        el.querySelectorAll('input, select, textarea').forEach(function (f) {
+          f.value = '';
+          f.setAttribute('aria-required', 'false');
+          f.required = false;
+        });
+      }
+      function requireIn(el) {
+        el.querySelectorAll('select, input[type="text"], input[type="email"], textarea').forEach(function (f) {
+          f.required = true;
+          f.setAttribute('aria-required', 'true');
+        });
+      }
+
+      var girlShoeWrap = document.getElementById('girlShoeWrap');
+      var boyShoeWrap  = document.getElementById('boyShoeWrap');
+      document.getElementById('shoeGender').addEventListener('change', function (e) {
+        var v = e.target.value;
+        hide(girlShoeWrap); hide(boyShoeWrap);
+        if (v === 'Girl') { show(girlShoeWrap); requireIn(girlShoeWrap); }
+        if (v === 'Boy')  { show(boyShoeWrap);  requireIn(boyShoeWrap); }
+      });
+
+      var girlsUWrap = document.getElementById('girlsUnderwearWrap');
+      var boysUWrap  = document.getElementById('boysUnderwearWrap');
+      document.getElementById('underwearGender').addEventListener('change', function (e) {
+        var v = e.target.value;
+        hide(girlsUWrap); hide(boysUWrap);
+        if (v === 'Girl') { show(girlsUWrap); requireIn(girlsUWrap); }
+        if (v === 'Boy')  { show(boysUWrap);  requireIn(boysUWrap); }
+      });
+
+      var swWrap = document.getElementById('swWrap');
+      document.getElementById('hasSocialWorker').addEventListener('change', function (e) {
+        if (e.target.value === 'Yes') {
+          show(swWrap);
+          ['swFirstName','swLastName','swEmail','swCounty'].forEach(function (id) {
+            var f = document.getElementById(id);
+            f.required = true;
+            f.setAttribute('aria-required', 'true');
+          });
+        } else {
+          hide(swWrap);
+        }
+      });
+
+      function setError(id, msg) {
+        var input = document.getElementById(id);
+        var err = document.getElementById(id + '-error');
+        if (msg) {
+          if (input) input.setAttribute('aria-invalid', 'true');
+          if (err) err.textContent = msg;
+        } else {
+          if (input) input.setAttribute('aria-invalid', 'false');
+          if (err) err.textContent = '';
+        }
+      }
+      function clearAllErrors() {
+        document.querySelectorAll('.field-error').forEach(function (e) { e.textContent = ''; });
+        document.querySelectorAll('[aria-invalid="true"]').forEach(function (i) { i.setAttribute('aria-invalid', 'false'); });
+      }
+
+      function generateSubmissionId() {
+        var now = new Date();
+        var pad = function (n) { return String(n).padStart(2, '0'); };
+        var d = '' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate());
+        var t = '' + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds());
+        var rand = Math.random().toString(36).substring(2, 6);
+        return 'SOH-' + d + '-' + t + '-' + rand;
+      }
+
+      function setStatus(kind, text, idValue) {
+        statusEl.hidden = false;
+        statusEl.className = 'status ' + kind;
+        statusText.textContent = text;
+        if (idValue) {
+          statusId.hidden = false;
+          statusId.textContent = idValue;
+        } else {
+          statusId.hidden = true;
+          statusId.textContent = '';
+        }
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearAllErrors();
+        statusEl.hidden = true;
+
+        var missing = [];
+        var firstInvalid = null;
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name) return;
+          if (el.disabled) return;
+          if (el.closest('[hidden]')) return;
+          if (el.type === 'checkbox') return;
+          if (el.required && !String(el.value || '').trim()) {
+            missing.push(el.id);
+            if (!firstInvalid) firstInvalid = el;
+            setError(el.id, 'Required.');
+          } else if (el.type === 'email' && el.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)) {
+            missing.push(el.id);
+            if (!firstInvalid) firstInvalid = el;
+            setError(el.id, 'Enter a valid email.');
+          }
+        });
+
+        if (!document.getElementById('agreeToTerms').checked) {
+          setError('agreeToTerms', 'You must agree to continue.');
+          if (!firstInvalid) firstInvalid = document.getElementById('agreeToTerms');
+          missing.push('agreeToTerms');
+        }
+
+        if (missing.length) {
+          setStatus('error', 'Please complete all required fields and try again.');
+          if (firstInvalid && firstInvalid.focus) firstInvalid.focus();
+          return;
+        }
+
+        var payload = {};
+        new FormData(form).forEach(function (val, key) { payload[key] = val; });
+        payload.submissionId = generateSubmissionId();
+        payload.requestType = 'Shoes of Hope';
+        payload.agreeToTerms = document.getElementById('agreeToTerms').checked;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting…';
+        statusEl.hidden = true;
+
+        fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
+          .then(function (result) {
+            if (result.ok && result.body && result.body.success) {
+              setStatus(
+                'success',
+                'Thank you! Your registration was received. A confirmation email is on its way. Your confirmation ID is ',
+                result.body.submissionId
+              );
+              form.reset();
+              hide(girlShoeWrap); hide(boyShoeWrap);
+              hide(girlsUWrap); hide(boysUWrap);
+              hide(swWrap);
+              statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              throw new Error((result.body && result.body.message) || 'Submission failed.');
+            }
+          })
+          .catch(function (err) {
+            setStatus('error', 'Something went wrong: ' + err.message + ' Please try again, or email info@lotcarolinas.com.');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit registration';
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
