@@ -16,11 +16,12 @@ function generateSubmissionId() {
 
 function validate(formData) {
     const required = [
+        'eventLocation',
         'relationship', 'isLicensedFoster',
         'caregiverFirstName', 'caregiverLastName',
         'caregiverEmail', 'caregiverPhone',
         'caregiverStreet', 'caregiverCity', 'caregiverState', 'caregiverZip', 'caregiverCounty',
-        'childFirstName', 'childLastInitial', 'childAge', 'childGender',
+        'childFirstName', 'childLastInitial', 'childAge', 'childGender', 'childGradeFall',
         'childPlacementType', 'childCustodyCounty',
         'shoeGender', 'underwearGender',
         'hasSocialWorker', 'agreeToTerms',

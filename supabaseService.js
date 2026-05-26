@@ -45,6 +45,15 @@ class SupabaseService {
 
             const childLastInitial = (data.childLastInitial || '').slice(0, 1).toUpperCase() || null;
 
+            const commentParts = [];
+            if (data.specialtyShoeNotes && String(data.specialtyShoeNotes).trim()) {
+                commentParts.push('Specialty shoe needs: ' + String(data.specialtyShoeNotes).trim());
+            }
+            if (data.shoesOfHopeComments && String(data.shoesOfHopeComments).trim()) {
+                commentParts.push(String(data.shoesOfHopeComments).trim());
+            }
+            const combinedComments = commentParts.length ? commentParts.join('\n\n') : null;
+
             const submission = {
                 // System
                 submission_id: data.submissionId,
@@ -75,9 +84,9 @@ class SupabaseService {
                 social_worker_phone: data.swPhone || null,
                 social_worker_county: data.swCounty || null,
 
-                // Pickup defaults (SOH has no pickup step; caregiver is the contact)
+                // Event location — caregiver picks Gaston or Rutherford
                 completion_contact: 'Caregiver',
-                pickup_location: 'TBD',
+                pickup_location: data.eventLocation || 'TBD',
 
                 // Child
                 child_first_name: data.childFirstName || null,
@@ -96,7 +105,7 @@ class SupabaseService {
                 underwear_gender: data.underwearGender || null,
                 girls_underwear_size: data.girlsUnderwearSize || null,
                 boys_underwear_size: data.boysUnderwearSize || null,
-                shoes_of_hope_comments: data.shoesOfHopeComments || null,
+                shoes_of_hope_comments: combinedComments,
 
                 // Consent
                 agree_to_terms: data.agreeToTerms === true || data.agreeToTerms === 'true' || data.agreeToTerms === 'on',

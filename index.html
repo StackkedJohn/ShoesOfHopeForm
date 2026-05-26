@@ -146,7 +146,7 @@
   <main id="main" class="container">
     <section class="intro" aria-labelledby="intro-heading">
       <h2 id="intro-heading">Register a child for shoes</h2>
-      <p>This form takes about 5&ndash;7 minutes. You'll choose a shoe size and underwear size based on the child's gender. We'll email a confirmation when your registration is received.</p>
+      <p>This form takes about 5&ndash;7 minutes. Please complete one registration per child. You'll pick your event location (Gaston or Rutherford) and then choose a shoe size and underwear size based on the child's gender. We'll email a confirmation when your registration is received.</p>
       <p>Required fields are marked with <span aria-hidden="true" style="color:var(--lotc-red)">*</span>.</p>
     </section>
 
@@ -154,7 +154,24 @@
       <h2 id="form-start" class="sr-only">Shoes of Hope registration form</h2>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">1</span>Caregiver information</legend>
+        <legend><span class="legend-num" aria-hidden="true">1</span>Event location</legend>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="eventLocation">Which location will you attend?<span class="req" aria-hidden="true">*</span></label>
+            <select id="eventLocation" name="eventLocation" required aria-required="true">
+              <option value="">Select a location</option>
+              <option value="Gaston County">Gaston County — Tuesday, July 28 &amp; Wednesday, July 29 (2:00–7:00 PM)</option>
+              <option value="Rutherford County">Rutherford County — Saturday, August 1 (9:00 AM–12:00 PM)</option>
+            </select>
+            <p class="hint">Gaston: LOTC Office, 1000 S. Myrtle School Rd, Gastonia. Rutherford: Second Baptist Church, 191 Green St, Rutherfordton.</p>
+            <p class="field-error" id="eventLocation-error" aria-live="polite"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">2</span>Caregiver information</legend>
 
         <div class="field-row two-col">
           <div class="field">
@@ -251,7 +268,7 @@
       </fieldset>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">2</span>Child information</legend>
+        <legend><span class="legend-num" aria-hidden="true">3</span>Child information</legend>
 
         <div class="field-row two-col">
           <div class="field">
@@ -274,15 +291,18 @@
             <p class="field-error" id="childAge-error" aria-live="polite"></p>
           </div>
           <div class="field">
-            <label for="childGradeFall">Grade this fall</label>
-            <select id="childGradeFall" name="childGradeFall">
+            <label for="childGradeFall">Grade this fall<span class="req" aria-hidden="true">*</span></label>
+            <select id="childGradeFall" name="childGradeFall" required aria-required="true">
               <option value="">Select</option>
-              <option>Pre-K</option>
+              <option>Not in School yet</option>
               <option>Kindergarten</option>
               <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option>
               <option>5th</option><option>6th</option><option>7th</option><option>8th</option>
               <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
             </select>
+            <p class="hint" id="gradeBucketHint" aria-live="polite"></p>
+            <input type="hidden" id="gradeBucket" name="gradeBucket" value="" />
+            <p class="field-error" id="childGradeFall-error" aria-live="polite"></p>
           </div>
           <div class="field">
             <label for="childGender">Gender<span class="req" aria-hidden="true">*</span></label>
@@ -319,7 +339,7 @@
       </fieldset>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">3</span>Shoes</legend>
+        <legend><span class="legend-num" aria-hidden="true">4</span>Shoes</legend>
         <p class="hint" style="margin-top:8px;">Choose the shoe category and size that best fits the child.</p>
 
         <div class="field-row two-col">
@@ -339,26 +359,46 @@
             <label for="girlShoeSize">Girl shoe size<span class="req" aria-hidden="true">*</span></label>
             <select id="girlShoeSize" name="girlShoeSize">
               <option value="">Select size</option>
-              <optgroup label="Toddler (2-4 yo)">
-                <option>Toddler 7</option><option>Toddler 8</option>
-                <option>Toddler 9</option><option>Toddler 10</option>
+              <optgroup label="Toddler Girl (1-3 yo)">
+                <option>Toddler Girl 6c (1-3 yo)</option>
+                <option>Toddler Girl 7c (1-3 yo)</option>
+                <option>Toddler Girl 8c (1-3 yo)</option>
+                <option>Toddler Girl 9c (1-3 yo)</option>
               </optgroup>
               <optgroup label="Little Girl (4-6 yo)">
+                <option>Little Girl 10c (4-6 yo)</option>
                 <option>Little Girl 11c (4-6 yo)</option>
                 <option>Little Girl 12c (4-6 yo)</option>
                 <option>Little Girl 13c (4-6 yo)</option>
-                <option>Little Girl 1 (4-6 yo)</option>
-                <option>Little Girl 2 (4-6 yo)</option>
               </optgroup>
-              <optgroup label="Big Girl (7-10 yo)">
-                <option>Big Girl 3</option><option>Big Girl 4</option>
-                <option>Big Girl 5</option><option>Big Girl 6</option>
+              <optgroup label="Big Girl (7-13 yo)">
+                <option>Big Girl 1 (7-13 yo)</option>
+                <option>Big Girl 1.5 (7-13 yo)</option>
+                <option>Big Girl 2 (7-13 yo)</option>
+                <option>Big Girl 2.5 (7-13 yo)</option>
+                <option>Big Girl 3 (7-13 yo)</option>
+                <option>Big Girl 3.5 (7-13 yo)</option>
+                <option>Big Girl 4 (7-13 yo)</option>
+                <option>Big Girl 4.5 (7-13 yo)</option>
+                <option>Big Girl 5</option>
+                <option>Big Girl 5.5</option>
+                <option>Big Girl 5.5W</option>
               </optgroup>
-              <optgroup label="Women's (11+ yo)">
-                <option>Women's 5</option><option>Women's 6</option>
-                <option>Women's 7</option><option>Women's 8</option>
-                <option>Women's 9</option><option>Women's 10</option>
+              <optgroup label="Women's">
+                <option>Women's 6</option>
+                <option>Women's 6.5</option>
+                <option>Women's 7</option>
+                <option>Women's 7.5</option>
+                <option>Women's 8</option>
+                <option>Women's 8.5</option>
+                <option>Women's 9</option>
+                <option>Women's 9.5</option>
+                <option>Women's 10</option>
+                <option>Women's 10.5</option>
                 <option>Women's 11</option>
+                <option>Women's 11.5</option>
+                <option>Women's 12</option>
+                <option>Women's 13</option>
               </optgroup>
             </select>
             <p class="field-error" id="girlShoeSize-error" aria-live="polite"></p>
@@ -370,35 +410,64 @@
             <label for="boyShoeSize">Boy shoe size<span class="req" aria-hidden="true">*</span></label>
             <select id="boyShoeSize" name="boyShoeSize">
               <option value="">Select size</option>
-              <optgroup label="Toddler (2-4 yo)">
-                <option>Toddler 7</option><option>Toddler 8</option>
-                <option>Toddler 9</option><option>Toddler 10</option>
+              <optgroup label="Toddler Boy (1-3 yo)">
+                <option>Toddler Boy 6c (1-3 yo)</option>
+                <option>Toddler Boy 7c (1-3 yo)</option>
+                <option>Toddler Boy 8c (1-3 yo)</option>
+                <option>Toddler Boy 9c (1-3 yo)</option>
               </optgroup>
               <optgroup label="Little Boy (4-6 yo)">
+                <option>Little Boy 10c (4-6 yo)</option>
                 <option>Little Boy 11c (4-6 yo)</option>
                 <option>Little Boy 12c (4-6 yo)</option>
                 <option>Little Boy 13c (4-6 yo)</option>
-                <option>Little Boy 1 (4-6 yo)</option>
-                <option>Little Boy 2 (4-6 yo)</option>
               </optgroup>
-              <optgroup label="Big Boy (7-10 yo)">
-                <option>Big Boy 3</option><option>Big Boy 4</option>
-                <option>Big Boy 5</option><option>Big Boy 6</option>
+              <optgroup label="Big Boy (7-13 yo)">
+                <option>Big Boy 1 (7-13 yo)</option>
+                <option>Big Boy 1.5 (7-13 yo)</option>
+                <option>Big Boy 2 (7-13 yo)</option>
+                <option>Big Boy 2.5 (7-13 yo)</option>
+                <option>Big Boy 3 (7-13 yo)</option>
+                <option>Big Boy 3.5 (7-13 yo)</option>
+                <option>Big Boy 4 (7-13 yo)</option>
+                <option>Big Boy 4.5 (7-13 yo)</option>
+                <option>Big Boy 5 (7-13 yo)</option>
+                <option>Big Boy 5.5 (7-13 yo)</option>
+                <option>Big Boy 6 (7-13 yo)</option>
+                <option>Big Boy 6.5 (7-13 yo)</option>
               </optgroup>
-              <optgroup label="Men's (11+ yo)">
-                <option>Men's 6</option><option>Men's 7</option>
-                <option>Men's 8</option><option>Men's 9</option>
-                <option>Men's 10</option><option>Men's 11</option>
+              <optgroup label="Men's">
+                <option>Men's 7</option>
+                <option>Men's 7.5</option>
+                <option>Men's 8</option>
+                <option>Men's 8.5</option>
+                <option>Men's 9</option>
+                <option>Men's 9.5</option>
+                <option>Men's 10</option>
+                <option>Men's 10.5</option>
+                <option>Men's 11</option>
+                <option>Men's 11.5</option>
                 <option>Men's 12</option>
+                <option>Men's 12.5</option>
+                <option>Men's 13</option>
+                <option>Men's 14</option>
               </optgroup>
             </select>
             <p class="field-error" id="boyShoeSize-error" aria-live="polite"></p>
           </div>
         </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="specialtyShoeNotes">Specialty shoe needs (optional)</label>
+            <textarea id="specialtyShoeNotes" name="specialtyShoeNotes" placeholder="e.g., wide, extra wide, Billy shoes, braces"></textarea>
+            <p class="hint">This is NOT for shoe colors or styles — only unusual sizing issues. If a child needs a specialty shoe we may need to order it after the event; they still come to the event for their other items.</p>
+          </div>
+        </div>
       </fieldset>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">4</span>Underwear</legend>
+        <legend><span class="legend-num" aria-hidden="true">5</span>Underwear</legend>
 
         <div class="field-row two-col">
           <div class="field">
@@ -417,13 +486,30 @@
             <label for="girlsUnderwearSize">Girls underwear size<span class="req" aria-hidden="true">*</span></label>
             <select id="girlsUnderwearSize" name="girlsUnderwearSize">
               <option value="">Select size</option>
-              <option>Girls 4 (waist 21" / 29-38lb)</option>
-              <option>Girls 6 (waist 23" / 39-49lb)</option>
-              <option>Girls 8 (waist 24" / 50-67lb)</option>
-              <option>Girls 10 (waist 26" / 68-79lb)</option>
-              <option>Girls 12 (waist 27" / 80-94lb)</option>
-              <option>Girls 14 (waist 28" / 95-111lb)</option>
-              <option>Girls 16 (waist 29" / 112-127lb)</option>
+              <optgroup label="Toddler">
+                <option>Girl Toddler 2T</option>
+                <option>Girl Toddler 3T</option>
+                <option>Girl Toddler 4T</option>
+                <option>Girl Toddler 5T</option>
+              </optgroup>
+              <optgroup label="Girls">
+                <option>Girls 4 (waist 22" / 30-38lb)</option>
+                <option>Girls 6 (waist 23" / 39-49lb)</option>
+                <option>Girls 8 (waist 24" / 50-67lb)</option>
+                <option>Girls 10 (waist 25" / 68-84lb)</option>
+                <option>Girls 12 (waist 26" / 85-95lb)</option>
+                <option>Girls 14 (waist 27" / 96-107lb)</option>
+                <option>Girls 16 (waist 28" / 108-119lb)</option>
+              </optgroup>
+              <optgroup label="Women">
+                <option>Women 4 (XS) pant size 2-4</option>
+                <option>Women 5 (S) pant size 4-6</option>
+                <option>Women 6 (M) pant size 8-10</option>
+                <option>Women 7 (L) pant size 12-14</option>
+                <option>Women 8 (XL) pant size 14-16</option>
+                <option>Women 9 (2XL) pant size 16-18</option>
+                <option>Women 10 (3XL) pant size 18-20</option>
+              </optgroup>
             </select>
             <p class="field-error" id="girlsUnderwearSize-error" aria-live="polite"></p>
           </div>
@@ -434,13 +520,27 @@
             <label for="boysUnderwearSize">Boys underwear size<span class="req" aria-hidden="true">*</span></label>
             <select id="boysUnderwearSize" name="boysUnderwearSize">
               <option value="">Select size</option>
-              <option>Boys 4 (waist 21" / 29-38lb)</option>
-              <option>Boys 6 (waist 23" / 39-49lb)</option>
-              <option>Boys 8 (waist 24" / 50-67lb)</option>
-              <option>Boys 10 (waist 26" / 68-79lb)</option>
-              <option>Boys 12 (waist 27" / 80-94lb)</option>
-              <option>Boys 14 (waist 28" / 95-111lb)</option>
-              <option>Boys 16 (waist 29" / 112-127lb)</option>
+              <optgroup label="Toddler">
+                <option>Boy Toddler 2T</option>
+                <option>Boy Toddler 3T</option>
+                <option>Boy Toddler 4T</option>
+                <option>Boy Toddler 5T</option>
+              </optgroup>
+              <optgroup label="Boys">
+                <option>Boys 4 (XS) (waist 22" / 34-43lb)</option>
+                <option>Boys 6-8 (S) (waist 23-24" / 44-68lb)</option>
+                <option>Boys 10-12 (M) (waist 25-26" / 69-100lb)</option>
+                <option>Boys 14-16 (L) (waist 27-29" / 101-125lb)</option>
+                <option>Boys 18-20 (XL) (waist 30-32" / 126-146lb)</option>
+              </optgroup>
+              <optgroup label="Men">
+                <option>Men Small (waist 28-30")</option>
+                <option>Men Medium (waist 32-34")</option>
+                <option>Men Large (waist 36-38")</option>
+                <option>Men XL (waist 40-42")</option>
+                <option>Men 2XL (waist 44-46")</option>
+                <option>Men 3XL (waist 48-50")</option>
+              </optgroup>
             </select>
             <p class="field-error" id="boysUnderwearSize-error" aria-live="polite"></p>
           </div>
@@ -448,7 +548,7 @@
       </fieldset>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">5</span>Social worker</legend>
+        <legend><span class="legend-num" aria-hidden="true">6</span>Social worker</legend>
 
         <div class="field-row">
           <div class="field">
@@ -497,7 +597,7 @@
       </fieldset>
 
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">6</span>Comments &amp; consent</legend>
+        <legend><span class="legend-num" aria-hidden="true">7</span>Comments &amp; consent</legend>
 
         <div class="field-row">
           <div class="field">
@@ -576,6 +676,23 @@
         hide(girlsUWrap); hide(boysUWrap);
         if (v === 'Girl') { show(girlsUWrap); requireIn(girlsUWrap); }
         if (v === 'Boy')  { show(boysUWrap);  requireIn(boysUWrap); }
+      });
+
+      var gradeBucketMap = {
+        'Not in School yet': 'No grade',
+        'Kindergarten': 'Elementary',
+        '1st': 'Elementary', '2nd': 'Elementary', '3rd': 'Elementary',
+        '4th': 'Elementary', '5th': 'Elementary',
+        '6th': 'Middle School', '7th': 'Middle School', '8th': 'Middle School',
+        '9th': 'High School', '10th': 'High School',
+        '11th': 'High School', '12th': 'High School'
+      };
+      var gradeBucketHint = document.getElementById('gradeBucketHint');
+      var gradeBucketInput = document.getElementById('gradeBucket');
+      document.getElementById('childGradeFall').addEventListener('change', function (e) {
+        var bucket = gradeBucketMap[e.target.value] || '';
+        gradeBucketInput.value = bucket;
+        gradeBucketHint.textContent = bucket ? 'School bucket: ' + bucket : '';
       });
 
       var swWrap = document.getElementById('swWrap');
