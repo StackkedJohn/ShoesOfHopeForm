@@ -11,6 +11,7 @@
   <style>
     :root {
       --lotc-red:   #c22035;
+      --brand-red:  #c22035;
       --lotc-blue:  #86b2d3;
       --lotc-grey:  #a7a8a3;
       --lotc-black: #060511;
@@ -57,6 +58,8 @@
     }
     .intro h2 { margin: 0 0 8px; font-size: 18px; color: var(--lotc-black); }
     .intro p { margin: 8px 0 0; color: var(--text-muted); font-size: 14px; }
+    .intro ul { margin: 8px 0 0; padding-left: 20px; color: var(--text-muted); font-size: 14px; }
+    .intro li { margin: 4px 0; }
 
     fieldset {
       background: var(--card-bg); border: 1px solid var(--border);
@@ -72,14 +75,19 @@
       background: var(--lotc-red); color: #fff; border-radius: 50%;
       font-size: 12px; margin-right: 8px; vertical-align: middle;
     }
+    .subsection-title {
+      margin: 24px 0 4px; font-size: 14px; font-weight: 600; color: var(--lotc-black);
+      text-transform: uppercase; letter-spacing: 0.4px;
+    }
     .field-row { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
     @media (min-width: 640px) {
       .field-row.two-col { grid-template-columns: 1fr 1fr; }
-      .field-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+      .field-row.three-col { grid-template-columns: 1.4fr 0.6fr 1.4fr; }
     }
-    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field { display: flex; flex-direction: column; gap: 6px; position: relative; }
     label { font-size: 14px; font-weight: 500; color: var(--lotc-black); }
     label .req { color: var(--lotc-red); margin-left: 2px; }
+    .helper-text { font-weight: 400; color: var(--text-muted); font-size: 12px; }
     .hint { font-size: 12px; color: var(--text-muted); }
 
     input[type="text"], input[type="email"], input[type="tel"],
@@ -98,16 +106,45 @@
     input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
       border-color: var(--error);
     }
+    input[readonly] { background: #f3f4f6; }
     .field-error { color: var(--error); font-size: 12px; min-height: 1em; }
+
+    .radio-group { display: flex; gap: 20px; padding: 4px 0; }
+    .radio-label { display: flex; align-items: center; gap: 8px; font-weight: 400; font-size: 14px; cursor: pointer; }
+    .radio-label input[type="radio"] { width: 18px; height: 18px; min-height: 0; }
+
+    .inline-check { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+    .inline-check input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; margin: 0; }
+    .inline-check label { font-weight: 400; color: var(--text-muted); }
 
     .checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; }
     .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 2px 0 0; }
     .checkbox-row label { font-weight: 400; color: var(--text-muted); font-size: 13px; }
 
+    .hidden { display: none !important; }
+
+    /* Address autocomplete */
+    .address-suggestions {
+      display: none; position: absolute; width: 100%; max-height: 300px; overflow-y: auto;
+      background: #fff; border: 2px solid var(--lotc-red); border-radius: 8px;
+      margin-top: 4px; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); top: 100%;
+    }
+    .address-suggestions div { padding: 12px; cursor: pointer; border-bottom: 1px solid #e5e7eb; }
+    .address-suggestions div:hover { background: rgba(194,32,53,0.08); }
+    .manual-address {
+      margin-top: 8px; padding: 16px; border: 1px solid var(--border);
+      border-radius: 8px; background: #f9fafb;
+    }
+    .address-display {
+      padding: 12px; background: #f0fdf4; border: 1px solid #86efac;
+      border-radius: 8px; margin-top: 8px; font-size: 14px;
+    }
+    .link-btn { color: var(--lotc-red); font-size: 13px; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; }
+
     .actions { margin-top: 24px; display: flex; gap: 12px; flex-direction: column; }
     @media (min-width: 640px) { .actions { flex-direction: row; justify-content: flex-end; } }
 
-    button {
+    button.btn {
       font: inherit; cursor: pointer; border-radius: 8px;
       padding: 12px 20px; border: 1px solid transparent;
       font-weight: 600; font-size: 15px; min-height: 48px;
@@ -146,16 +183,21 @@
   <main id="main" class="container">
     <section class="intro" aria-labelledby="intro-heading">
       <h2 id="intro-heading">Register a child for shoes</h2>
-      <p>This form takes about 5&ndash;7 minutes. Please complete one registration per child. You'll pick your event location (Gaston or Rutherford) and then choose a shoe size and underwear size based on the child's gender. We'll email a confirmation when your registration is received.</p>
+      <p>This form takes about 5&ndash;7 minutes. Please complete <strong>one registration per child</strong>. You'll pick your event location (Gaston or Rutherford) and then choose a shoe size and underwear size based on the child's gender. We'll email a confirmation when your registration is received.</p>
+      <ul>
+        <li>We serve children in foster/kinship care, ages 2&ndash;18 (still in school in Fall 2026).</li>
+        <li>The child is <strong>required to attend</strong> the event, as they pick out their own things.</li>
+        <li>Submitting this form does not guarantee a spot — everyone receives a phone call to process their registration.</li>
+      </ul>
       <p>Required fields are marked with <span aria-hidden="true" style="color:var(--lotc-red)">*</span>.</p>
     </section>
 
     <form id="soh-form" novalidate aria-describedby="form-status" autocomplete="on">
       <h2 id="form-start" class="sr-only">Shoes of Hope registration form</h2>
 
+      <!-- 1. Event location -->
       <fieldset>
         <legend><span class="legend-num" aria-hidden="true">1</span>Event location</legend>
-
         <div class="field-row">
           <div class="field">
             <label for="eventLocation">Which location will you attend?<span class="req" aria-hidden="true">*</span></label>
@@ -170,126 +212,616 @@
         </div>
       </fieldset>
 
+      <!-- 2. Relationship to child -->
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">2</span>Caregiver information</legend>
+        <legend><span class="legend-num" aria-hidden="true">2</span>Relationship to child</legend>
 
-        <div class="field-row two-col">
+        <div class="field-row">
           <div class="field">
-            <label for="relationship">Your relationship to the child<span class="req" aria-hidden="true">*</span></label>
+            <label for="relationship">Relationship to the child of the adult completing the form<span class="req" aria-hidden="true">*</span></label>
             <select id="relationship" name="relationship" required aria-required="true">
-              <option value="">Select one</option>
-              <option>Foster Parent</option>
-              <option>Kinship Caregiver</option>
-              <option>Adoptive Parent</option>
-              <option>Biological Parent</option>
-              <option>Social Worker</option>
-              <option>Other</option>
+              <option value="">-- Select --</option>
+              <option value="Caregiver">Caregiver</option>
+              <option value="DSS Social Worker">DSS Social Worker</option>
+              <option value="Other">Other</option>
             </select>
             <p class="field-error" id="relationship-error" aria-live="polite"></p>
           </div>
+        </div>
 
+        <div class="field-row hidden" id="relationshipOtherTypeGroup">
           <div class="field">
-            <label for="isLicensedFoster">Are you a licensed foster parent?<span class="req" aria-hidden="true">*</span></label>
-            <select id="isLicensedFoster" name="isLicensedFoster" required aria-required="true">
-              <option value="">Select one</option>
-              <option>Yes</option>
-              <option>No</option>
+            <label for="relationshipOtherType">Please specify other relationship type<span class="req" aria-hidden="true">*</span></label>
+            <select id="relationshipOtherType" name="relationshipOtherType">
+              <option value="">-- Select --</option>
+              <option value="GAL">GAL</option>
+              <option value="Group Home">Group Home</option>
+              <option value="Licensing agency caseworker">Licensing agency caseworker</option>
+              <option value="County staff">County staff</option>
+              <option value="Other">Other</option>
             </select>
-            <p class="field-error" id="isLicensedFoster-error" aria-live="polite"></p>
+            <p class="field-error" id="relationshipOtherType-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row two-col">
+        <div class="field-row hidden" id="relationshipOtherCustomGroup">
           <div class="field">
-            <label for="caregiverFirstName">Caregiver first name<span class="req" aria-hidden="true">*</span></label>
+            <label for="relationshipOtherCustom">Please specify<span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="relationshipOtherCustom" name="relationshipOtherCustom" placeholder="Enter relationship details" />
+            <p class="field-error" id="relationshipOtherCustom-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <!-- Adult Completing the Form — shown when relationship = Other -->
+        <div class="hidden" id="personCompletingSection">
+          <p class="subsection-title">Adult Completing the Form</p>
+          <div class="field-row three-col">
+            <div class="field">
+              <label for="personCompletingFirstName">First name<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="personCompletingFirstName" name="personCompletingFirstName" />
+              <p class="field-error" id="personCompletingFirstName-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="personCompletingMiddleName">Middle</label>
+              <input type="text" id="personCompletingMiddleName" name="personCompletingMiddleName" />
+            </div>
+            <div class="field">
+              <label for="personCompletingLastName">Last name<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="personCompletingLastName" name="personCompletingLastName" />
+              <p class="field-error" id="personCompletingLastName-error" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field-row two-col">
+            <div class="field">
+              <label for="personCompletingPhone">Phone number<span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="personCompletingPhone" name="personCompletingPhone" placeholder="(555) 555-5555" maxlength="14" />
+              <p class="field-error" id="personCompletingPhone-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="personCompletingTextable">Is this number textable?<span class="req" aria-hidden="true">*</span></label>
+              <select id="personCompletingTextable" name="personCompletingTextable">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              <p class="field-error" id="personCompletingTextable-error" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field-row hidden" id="personCompletingAltPhoneGroup">
+            <div class="field">
+              <label for="personCompletingAltPhone">Alternative phone number<span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="personCompletingAltPhone" name="personCompletingAltPhone" placeholder="(555) 555-5555" maxlength="14" />
+              <p class="field-error" id="personCompletingAltPhone-error" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="personCompletingEmail">Email address<span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="personCompletingEmail" name="personCompletingEmail" placeholder="email@example.com" />
+              <p class="field-error" id="personCompletingEmail-error" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 3. Caregiver information -->
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">3</span>Caregiver information</legend>
+
+        <div class="field-row three-col">
+          <div class="field">
+            <label for="caregiverFirstName">First name<span class="req" aria-hidden="true">*</span></label>
             <input id="caregiverFirstName" name="caregiverFirstName" type="text" autocomplete="given-name" required aria-required="true" />
             <p class="field-error" id="caregiverFirstName-error" aria-live="polite"></p>
           </div>
           <div class="field">
-            <label for="caregiverLastName">Caregiver last name<span class="req" aria-hidden="true">*</span></label>
+            <label for="caregiverMiddleName">Middle</label>
+            <input id="caregiverMiddleName" name="caregiverMiddleName" type="text" autocomplete="additional-name" />
+          </div>
+          <div class="field">
+            <label for="caregiverLastName">Last name<span class="req" aria-hidden="true">*</span></label>
             <input id="caregiverLastName" name="caregiverLastName" type="text" autocomplete="family-name" required aria-required="true" />
             <p class="field-error" id="caregiverLastName-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row two-col">
+        <div class="field-row">
           <div class="field">
-            <label for="caregiverEmail">Email<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverEmail" name="caregiverEmail" type="email" autocomplete="email" required aria-required="true" />
-            <p class="hint">We'll send your confirmation here.</p>
-            <p class="field-error" id="caregiverEmail-error" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label for="caregiverPhone">Phone<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverPhone" name="caregiverPhone" type="tel" autocomplete="tel" required aria-required="true" />
+            <label for="caregiverPhone">Mobile number <span class="helper-text">(for status updates)</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverPhone" name="caregiverPhone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" maxlength="14" required aria-required="true" />
+            <div class="inline-check">
+              <input type="checkbox" id="noMobileNumber" name="noMobileNumber" />
+              <label for="noMobileNumber">I do not have a mobile number</label>
+            </div>
             <p class="field-error" id="caregiverPhone-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row">
+        <div class="field-row hidden" id="alternativePhoneGroup">
           <div class="field">
-            <label for="caregiverStreet">Street address<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverStreet" name="caregiverStreet" type="text" autocomplete="street-address" required aria-required="true" />
-            <p class="field-error" id="caregiverStreet-error" aria-live="polite"></p>
+            <label for="alternativePhone">Alternative phone number<span class="req" aria-hidden="true">*</span></label>
+            <input id="alternativePhone" name="alternativePhone" type="tel" placeholder="(555) 555-5555" maxlength="14" />
+            <p class="field-error" id="alternativePhone-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row three-col">
+        <div class="field-row" id="knowEmailQuestionGroup">
           <div class="field">
-            <label for="caregiverCity">City<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverCity" name="caregiverCity" type="text" autocomplete="address-level2" required aria-required="true" />
-            <p class="field-error" id="caregiverCity-error" aria-live="polite"></p>
+            <label>Do you know the caregiver's email address?<span class="req" aria-hidden="true">*</span></label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" id="knowEmailYes" name="knowCaregiverEmail" value="yes" required /> Yes</label>
+              <label class="radio-label"><input type="radio" id="knowEmailNo" name="knowCaregiverEmail" value="no" /> No</label>
+            </div>
+            <p class="field-error" id="knowCaregiverEmail-error" aria-live="polite"></p>
           </div>
+        </div>
+
+        <div class="field-row hidden" id="caregiverEmailGroup">
           <div class="field">
-            <label for="caregiverState">State<span class="req" aria-hidden="true">*</span></label>
-            <select id="caregiverState" name="caregiverState" required aria-required="true" autocomplete="address-level1">
-              <option value="">Select</option>
-              <option>NC</option>
-              <option>SC</option>
-              <option>Other</option>
+            <label for="caregiverEmail">Caregiver's email address<span class="req" aria-hidden="true">*</span></label>
+            <input id="caregiverEmail" name="caregiverEmail" type="email" autocomplete="email" />
+            <p class="hint">We'll send the confirmation here.</p>
+            <p class="field-error" id="caregiverEmail-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <!-- Address (Mapbox autocomplete + manual fallback) -->
+        <div class="field-row">
+          <div class="field">
+            <label for="caregiverAddressSearch">Caregiver's address<span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="caregiverAddressSearch" placeholder="Start typing your address…" autocomplete="off" />
+            <div id="caregiverAddressSuggestions" class="address-suggestions"></div>
+            <div id="manualAddressToggle" style="margin-top:6px;">
+              <button type="button" class="link-btn" id="showManualEntry">Can't find your address? Enter it manually</button>
+            </div>
+            <p class="field-error" id="caregiverAddress-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div id="manualAddressSection" class="manual-address" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <strong style="font-size:14px;">Enter address manually</strong>
+            <button type="button" class="link-btn" id="backToAddressSearch">Back to address search</button>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="manualStreet">Street address<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="manualStreet" placeholder="123 Main St" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="manualZip">ZIP code<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="manualZip" placeholder="28052" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
+              <p class="hint">City, state, and county auto-fill from your ZIP code.</p>
+            </div>
+          </div>
+          <div class="field-row two-col">
+            <div class="field">
+              <label for="manualCity">City<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="manualCity" placeholder="Auto-fills from ZIP" readonly />
+            </div>
+            <div class="field">
+              <label for="manualState">State<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="manualState" placeholder="Auto-fills from ZIP" readonly />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="manualCounty">County<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="manualCounty" placeholder="Auto-fills from ZIP" readonly />
+            </div>
+          </div>
+        </div>
+
+        <div id="caregiverAddressDisplay" class="address-display" style="display:none;">
+          <strong>Selected address:</strong>
+          <div id="caregiverAddressText" style="margin-top:4px;"></div>
+          <button type="button" class="link-btn" id="clearCaregiverAddressBtn" style="margin-top:8px;">Change address</button>
+        </div>
+
+        <!-- Hidden parsed address components -->
+        <input type="hidden" id="caregiverStreet" name="caregiverStreet" />
+        <input type="hidden" id="caregiverZip" name="caregiverZip" />
+        <input type="hidden" id="caregiverCity" name="caregiverCity" />
+        <input type="hidden" id="caregiverState" name="caregiverState" />
+        <input type="hidden" id="caregiverCounty" name="caregiverCounty" />
+
+        <div class="field-row">
+          <div class="field">
+            <label for="isLicensedFoster">Is the caregiver a licensed foster parent?<span class="req" aria-hidden="true">*</span></label>
+            <select id="isLicensedFoster" name="isLicensedFoster" required aria-required="true">
+              <option value="">-- Select --</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Do not know">Do not know</option>
             </select>
-            <p class="field-error" id="caregiverState-error" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label for="caregiverZip">ZIP<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverZip" name="caregiverZip" type="text" inputmode="numeric" pattern="[0-9]{5}" autocomplete="postal-code" required aria-required="true" />
-            <p class="field-error" id="caregiverZip-error" aria-live="polite"></p>
+            <p class="field-error" id="isLicensedFoster-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row">
+        <div class="field-row hidden" id="licensingAgencyGroup">
           <div class="field">
-            <label for="caregiverCounty">County of residence<span class="req" aria-hidden="true">*</span></label>
-            <input id="caregiverCounty" name="caregiverCounty" type="text" required aria-required="true" placeholder="e.g., Gaston, or York, SC" />
-            <p class="hint">NC counties: just the county name. Out-of-state: <strong>County, ST</strong> (e.g., York, SC).</p>
-            <p class="field-error" id="caregiverCounty-error" aria-live="polite"></p>
+            <label for="licensingAgency">Caregiver's licensing agency<span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="licensingAgencySearch" placeholder="Type to filter agencies…" />
+            <select id="licensingAgency" name="licensingAgency">
+              <option value="">-- Select --</option>
+              <option value="A Caring Alternative">A Caring Alternative</option>
+              <option value="A Sure House">A Sure House</option>
+              <option value="Access Family Services, Inc.">Access Family Services, Inc.</option>
+              <option value="Alamance County DHHS">Alamance County DHHS</option>
+              <option value="Alexander County DHHS">Alexander County DHHS</option>
+              <option value="Alexander Youth Network">Alexander Youth Network</option>
+              <option value="Another Choice for Black Children">Another Choice for Black Children</option>
+              <option value="Bair Foundation">Bair Foundation</option>
+              <option value="Baptist Children's Homes of North Carolina, Inc.">Baptist Children's Homes of North Carolina, Inc.</option>
+              <option value="Bethany Christian Services of North Carolina">Bethany Christian Services of North Carolina</option>
+              <option value="Black Mountain Home for Children">Black Mountain Home for Children</option>
+              <option value="Boys & Girls Homes of NC">Boys & Girls Homes of NC</option>
+              <option value="Brandi Nichole Enrichment Center">Brandi Nichole Enrichment Center</option>
+              <option value="Buncombe County DHHS">Buncombe County DHHS</option>
+              <option value="Burke County DHHS">Burke County DHHS</option>
+              <option value="Cabarrus County DHHS">Cabarrus County DHHS</option>
+              <option value="Caldwell County DHHS">Caldwell County DHHS</option>
+              <option value="Caring For Children">Caring For Children</option>
+              <option value="Carolina Adoption Services">Carolina Adoption Services</option>
+              <option value="Carolina Family Connections">Carolina Family Connections</option>
+              <option value="Carolina Therapeutic Services">Carolina Therapeutic Services</option>
+              <option value="Catawba County DHHS">Catawba County DHHS</option>
+              <option value="Cherokee Children's Home">Cherokee Children's Home</option>
+              <option value="Cherokee Family Safety (EBCI)">Cherokee Family Safety (EBCI)</option>
+              <option value="Children's Home Society of North Carolina">Children's Home Society of North Carolina</option>
+              <option value="Children's Hope Alliance">Children's Hope Alliance</option>
+              <option value="Cleveland County DHHS">Cleveland County DHHS</option>
+              <option value="Community Specialized Services">Community Specialized Services</option>
+              <option value="Crossnore">Crossnore</option>
+              <option value="Cumberland County DHHS">Cumberland County DHHS</option>
+              <option value="Darlington County, SC DHHS">Darlington County, SC DHHS</option>
+              <option value="Davidson Family">Davidson Family</option>
+              <option value="Davie County DHHS">Davie County DHHS</option>
+              <option value="Daymark Recovery Services">Daymark Recovery Services</option>
+              <option value="Ebenezer Christian Children's Homes">Ebenezer Christian Children's Homes</option>
+              <option value="ECBI Family Safety Program">ECBI Family Safety Program</option>
+              <option value="Eliada Homes">Eliada Homes</option>
+              <option value="Elon Homes and Schools for Children, Inc.">Elon Homes and Schools for Children, Inc.</option>
+              <option value="Epworth Children & Family es">Epworth Children & Family es</option>
+              <option value="Families First Support Services, LLC">Families First Support Services, LLC</option>
+              <option value="Family Preservation Community Services">Family Preservation Community Services</option>
+              <option value="Firm Foundation">Firm Foundation</option>
+              <option value="Foundation Strong, LLC">Foundation Strong, LLC</option>
+              <option value="Gaston County DHHS">Gaston County DHHS</option>
+              <option value="Haywood County DHHS">Haywood County DHHS</option>
+              <option value="Henderson County DHHS">Henderson County DHHS</option>
+              <option value="Hillcrest Behavioral Health">Hillcrest Behavioral Health</option>
+              <option value="Home of a Second Chance">Home of a Second Chance</option>
+              <option value="Iredell County DHHS">Iredell County DHHS</option>
+              <option value="Jackson County DHHS">Jackson County DHHS</option>
+              <option value="Lancaster County, SC DHHS">Lancaster County, SC DHHS</option>
+              <option value="Lincoln County DHHS">Lincoln County DHHS</option>
+              <option value="Lutheran Family Services in the Carolinas">Lutheran Family Services in the Carolinas</option>
+              <option value="McDowell County DHHS">McDowell County DHHS</option>
+              <option value="Mecklenburg County DHHS">Mecklenburg County DHHS</option>
+              <option value="Mega Touch Services">Mega Touch Services</option>
+              <option value="Methodist Home for Children">Methodist Home for Children</option>
+              <option value="Mitchell County DHHS">Mitchell County DHHS</option>
+              <option value="Montgomery County DHHS">Montgomery County DHHS</option>
+              <option value="Noah's House">Noah's House</option>
+              <option value="Omni Visions">Omni Visions</option>
+              <option value="Orange County DHHS">Orange County DHHS</option>
+              <option value="Pinnacle Family Services">Pinnacle Family Services</option>
+              <option value="Polk County DHHS">Polk County DHHS</option>
+              <option value="Primary Care Solution">Primary Care Solution</option>
+              <option value="Quality Family Services">Quality Family Services</option>
+              <option value="Rapha 4 Kidz">Rapha 4 Kidz</option>
+              <option value="Rockwell Child Development">Rockwell Child Development</option>
+              <option value="Rutherford County DHHS">Rutherford County DHHS</option>
+              <option value="Seven Homes Foster Care and Adoption Agency">Seven Homes Foster Care and Adoption Agency</option>
+              <option value="South Carolina DHHS">South Carolina DHHS</option>
+              <option value="South Mountain Children's Home">South Mountain Children's Home</option>
+              <option value="Spartanburg County, SC DHHS">Spartanburg County, SC DHHS</option>
+              <option value="Stanly County DHHS">Stanly County DHHS</option>
+              <option value="Support Inc. Gastonia">Support Inc. Gastonia</option>
+              <option value="Thompson Child & Family Focus">Thompson Child & Family Focus</option>
+              <option value="Triad Treatment">Triad Treatment</option>
+              <option value="Turning Point Homes, Inc">Turning Point Homes, Inc</option>
+              <option value="Union County DHHS">Union County DHHS</option>
+              <option value="Unique Caring Foundation">Unique Caring Foundation</option>
+              <option value="Watauga County DHHS">Watauga County DHHS</option>
+              <option value="Wilkes County DHHS">Wilkes County DHHS</option>
+              <option value="York County DSS, South Carolina">York County DSS, South Carolina</option>
+              <option value="Other">Other</option>
+            </select>
+            <p class="hint">The agency that licensed the foster caregiver.</p>
+            <p class="field-error" id="licensingAgency-error" aria-live="polite"></p>
           </div>
         </div>
       </fieldset>
 
+      <!-- 4. Social worker -->
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">3</span>Child information</legend>
+        <legend><span class="legend-num" aria-hidden="true">4</span>Social worker</legend>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="hasSocialWorker">Does the child have a DSS social worker?<span class="req" aria-hidden="true">*</span></label>
+            <select id="hasSocialWorker" name="hasSocialWorker" required aria-required="true">
+              <option value="">-- Select --</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <p class="field-error" id="hasSocialWorker-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div id="swWrap" class="hidden">
+          <div class="field-row three-col">
+            <div class="field">
+              <label for="swFirstName">First name<span class="req" aria-hidden="true">*</span></label>
+              <input id="swFirstName" name="swFirstName" type="text" />
+              <p class="field-error" id="swFirstName-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="swMiddleName">Middle</label>
+              <input id="swMiddleName" name="swMiddleName" type="text" />
+            </div>
+            <div class="field">
+              <label for="swLastName">Last name<span class="req" aria-hidden="true">*</span></label>
+              <input id="swLastName" name="swLastName" type="text" />
+              <p class="field-error" id="swLastName-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="swPhone">Mobile number<span class="req" aria-hidden="true">*</span></label>
+              <input id="swPhone" name="swPhone" type="tel" placeholder="(555) 555-5555" maxlength="14" />
+              <div class="inline-check">
+                <input type="checkbox" id="noSocialWorkerMobileNumber" name="noSocialWorkerMobileNumber" />
+                <label for="noSocialWorkerMobileNumber">No mobile number</label>
+              </div>
+              <p class="field-error" id="swPhone-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field-row hidden" id="alternativeSocialWorkerPhoneGroup">
+            <div class="field">
+              <label for="alternativeSocialWorkerPhone">Alternative phone number<span class="req" aria-hidden="true">*</span></label>
+              <input id="alternativeSocialWorkerPhone" name="alternativeSocialWorkerPhone" type="tel" placeholder="(555) 555-5555" maxlength="14" />
+              <p class="field-error" id="alternativeSocialWorkerPhone-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field-row two-col">
+            <div class="field">
+              <label for="socialWorkerCanText">Can the social worker receive text messages?<span class="req" aria-hidden="true">*</span></label>
+              <select id="socialWorkerCanText" name="socialWorkerCanText">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              <p class="field-error" id="socialWorkerCanText-error" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="swEmail">Social worker's email<span class="req" aria-hidden="true">*</span></label>
+              <input id="swEmail" name="swEmail" type="email" />
+              <p class="field-error" id="swEmail-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="socialWorkerCounty">Social worker county of employment<span class="req" aria-hidden="true">*</span></label>
+              <select id="socialWorkerCounty" name="socialWorkerCounty" autocomplete="off">
+                <option value="">-- Select --</option>
+                <option value="Abbeville, SC">Abbeville, SC</option>
+                <option value="Aiken, SC">Aiken, SC</option>
+                <option value="Alamance, NC">Alamance, NC</option>
+                <option value="Alexander, NC">Alexander, NC</option>
+                <option value="Alleghany, NC">Alleghany, NC</option>
+                <option value="Allendale, SC">Allendale, SC</option>
+                <option value="Anderson, SC">Anderson, SC</option>
+                <option value="Anson, NC">Anson, NC</option>
+                <option value="Ashe, NC">Ashe, NC</option>
+                <option value="Avery, NC">Avery, NC</option>
+                <option value="Bamberg, SC">Bamberg, SC</option>
+                <option value="Barnwell, SC">Barnwell, SC</option>
+                <option value="Beaufort, NC">Beaufort, NC</option>
+                <option value="Beaufort, SC">Beaufort, SC</option>
+                <option value="Berkeley, SC">Berkeley, SC</option>
+                <option value="Bertie, NC">Bertie, NC</option>
+                <option value="Bladen, NC">Bladen, NC</option>
+                <option value="Brunswick, NC">Brunswick, NC</option>
+                <option value="Buncombe, NC">Buncombe, NC</option>
+                <option value="Burke, NC">Burke, NC</option>
+                <option value="Cabarrus, NC">Cabarrus, NC</option>
+                <option value="Caldwell, NC">Caldwell, NC</option>
+                <option value="Calhoun, SC">Calhoun, SC</option>
+                <option value="Camden, NC">Camden, NC</option>
+                <option value="Carteret, NC">Carteret, NC</option>
+                <option value="Caswell, NC">Caswell, NC</option>
+                <option value="Catawba, NC">Catawba, NC</option>
+                <option value="Charleston, SC">Charleston, SC</option>
+                <option value="Chatham, NC">Chatham, NC</option>
+                <option value="Cherokee, NC">Cherokee, NC</option>
+                <option value="Cherokee, SC">Cherokee, SC</option>
+                <option value="Chester, SC">Chester, SC</option>
+                <option value="Chesterfield, SC">Chesterfield, SC</option>
+                <option value="Chowan, NC">Chowan, NC</option>
+                <option value="Clarendon, SC">Clarendon, SC</option>
+                <option value="Clay, NC">Clay, NC</option>
+                <option value="Cleveland, NC">Cleveland, NC</option>
+                <option value="Colleton, SC">Colleton, SC</option>
+                <option value="Columbus, NC">Columbus, NC</option>
+                <option value="Craven, NC">Craven, NC</option>
+                <option value="Cumberland, NC">Cumberland, NC</option>
+                <option value="Currituck, NC">Currituck, NC</option>
+                <option value="Dare, NC">Dare, NC</option>
+                <option value="Darlington, SC">Darlington, SC</option>
+                <option value="Davidson, NC">Davidson, NC</option>
+                <option value="Davie, NC">Davie, NC</option>
+                <option value="Dillon, SC">Dillon, SC</option>
+                <option value="Dorchester, SC">Dorchester, SC</option>
+                <option value="Duplin, NC">Duplin, NC</option>
+                <option value="Durham, NC">Durham, NC</option>
+                <option value="Edgecombe, NC">Edgecombe, NC</option>
+                <option value="Edgefield, SC">Edgefield, SC</option>
+                <option value="Fairfield, SC">Fairfield, SC</option>
+                <option value="Florence, SC">Florence, SC</option>
+                <option value="Forsyth, NC">Forsyth, NC</option>
+                <option value="Franklin, NC">Franklin, NC</option>
+                <option value="Gaston, NC">Gaston, NC</option>
+                <option value="Gates, NC">Gates, NC</option>
+                <option value="Georgetown, SC">Georgetown, SC</option>
+                <option value="Graham, NC">Graham, NC</option>
+                <option value="Granville, NC">Granville, NC</option>
+                <option value="Greene, NC">Greene, NC</option>
+                <option value="Greenville, SC">Greenville, SC</option>
+                <option value="Greenwood, SC">Greenwood, SC</option>
+                <option value="Guilford, NC">Guilford, NC</option>
+                <option value="Halifax, NC">Halifax, NC</option>
+                <option value="Hampton, SC">Hampton, SC</option>
+                <option value="Harnett, NC">Harnett, NC</option>
+                <option value="Haywood, NC">Haywood, NC</option>
+                <option value="Henderson, NC">Henderson, NC</option>
+                <option value="Hertford, NC">Hertford, NC</option>
+                <option value="Hoke, NC">Hoke, NC</option>
+                <option value="Horry, SC">Horry, SC</option>
+                <option value="Hyde, NC">Hyde, NC</option>
+                <option value="Iredell, NC">Iredell, NC</option>
+                <option value="Jackson, NC">Jackson, NC</option>
+                <option value="Jasper, SC">Jasper, SC</option>
+                <option value="Johnston, NC">Johnston, NC</option>
+                <option value="Jones, NC">Jones, NC</option>
+                <option value="Kershaw, SC">Kershaw, SC</option>
+                <option value="Lancaster, SC">Lancaster, SC</option>
+                <option value="Laurens, SC">Laurens, SC</option>
+                <option value="Lee, NC">Lee, NC</option>
+                <option value="Lee, SC">Lee, SC</option>
+                <option value="Lenoir, NC">Lenoir, NC</option>
+                <option value="Lexington, SC">Lexington, SC</option>
+                <option value="Lincoln, NC">Lincoln, NC</option>
+                <option value="Macon, NC">Macon, NC</option>
+                <option value="Madison, NC">Madison, NC</option>
+                <option value="Marion, SC">Marion, SC</option>
+                <option value="Marlboro, SC">Marlboro, SC</option>
+                <option value="Martin, NC">Martin, NC</option>
+                <option value="McCormick, SC">McCormick, SC</option>
+                <option value="McDowell, NC">McDowell, NC</option>
+                <option value="Mecklenburg, NC">Mecklenburg, NC</option>
+                <option value="Mitchell, NC">Mitchell, NC</option>
+                <option value="Montgomery, NC">Montgomery, NC</option>
+                <option value="Moore, NC">Moore, NC</option>
+                <option value="Nash, NC">Nash, NC</option>
+                <option value="New Hanover, NC">New Hanover, NC</option>
+                <option value="Newberry, SC">Newberry, SC</option>
+                <option value="Northampton, NC">Northampton, NC</option>
+                <option value="Oconee, SC">Oconee, SC</option>
+                <option value="Onslow, NC">Onslow, NC</option>
+                <option value="Orange, NC">Orange, NC</option>
+                <option value="Orangeburg, SC">Orangeburg, SC</option>
+                <option value="Other, XX">Other, XX</option>
+                <option value="Pamlico, NC">Pamlico, NC</option>
+                <option value="Pasquotank, NC">Pasquotank, NC</option>
+                <option value="Pender, NC">Pender, NC</option>
+                <option value="Perquimans, NC">Perquimans, NC</option>
+                <option value="Person, NC">Person, NC</option>
+                <option value="Pickens, SC">Pickens, SC</option>
+                <option value="Pitt, NC">Pitt, NC</option>
+                <option value="Polk, NC">Polk, NC</option>
+                <option value="Randolph, NC">Randolph, NC</option>
+                <option value="Richland, SC">Richland, SC</option>
+                <option value="Richmond, NC">Richmond, NC</option>
+                <option value="Robeson, NC">Robeson, NC</option>
+                <option value="Rockingham, NC">Rockingham, NC</option>
+                <option value="Rowan, NC">Rowan, NC</option>
+                <option value="Rutherford, NC">Rutherford, NC</option>
+                <option value="Saluda, SC">Saluda, SC</option>
+                <option value="Sampson, NC">Sampson, NC</option>
+                <option value="Scotland, NC">Scotland, NC</option>
+                <option value="Spartanburg, SC">Spartanburg, SC</option>
+                <option value="Stanly, NC">Stanly, NC</option>
+                <option value="Stokes, NC">Stokes, NC</option>
+                <option value="Sumter, SC">Sumter, SC</option>
+                <option value="Surry, NC">Surry, NC</option>
+                <option value="Swain, NC">Swain, NC</option>
+                <option value="Transylvania, NC">Transylvania, NC</option>
+                <option value="Tyrell, NC">Tyrell, NC</option>
+                <option value="Union, NC">Union, NC</option>
+                <option value="Union, SC">Union, SC</option>
+                <option value="Unknown, XX">Unknown, XX</option>
+                <option value="Vance, NC">Vance, NC</option>
+                <option value="Wake, NC">Wake, NC</option>
+                <option value="Warren, NC">Warren, NC</option>
+                <option value="Washington, NC">Washington, NC</option>
+                <option value="Watauga, NC">Watauga, NC</option>
+                <option value="Wayne, NC">Wayne, NC</option>
+                <option value="Wilkes, NC">Wilkes, NC</option>
+                <option value="Williamsburg, SC">Williamsburg, SC</option>
+                <option value="Wilson, NC">Wilson, NC</option>
+                <option value="Yadkin, NC">Yadkin, NC</option>
+                <option value="Yancey, NC">Yancey, NC</option>
+                <option value="York, SC">York, SC</option>
+                <option value="Other">Other</option>
+              </select>
+              <p class="field-error" id="socialWorkerCounty-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field-row hidden" id="socialWorkerCountyOtherGroup">
+            <div class="field">
+              <label for="socialWorkerCountyOther">Please specify other county<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="socialWorkerCountyOther" name="socialWorkerCountyOther" placeholder="Enter county name" />
+              <p class="field-error" id="socialWorkerCountyOther-error" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 5. Child information -->
+      <fieldset>
+        <legend><span class="legend-num" aria-hidden="true">5</span>Child information</legend>
 
         <div class="field-row two-col">
           <div class="field">
-            <label for="childFirstName">Child first name<span class="req" aria-hidden="true">*</span></label>
+            <label for="childFirstName">Child's first name<span class="req" aria-hidden="true">*</span></label>
             <input id="childFirstName" name="childFirstName" type="text" required aria-required="true" />
             <p class="field-error" id="childFirstName-error" aria-live="polite"></p>
           </div>
           <div class="field">
-            <label for="childLastInitial">Child last initial<span class="req" aria-hidden="true">*</span></label>
-            <input id="childLastInitial" name="childLastInitial" type="text" maxlength="1" required aria-required="true" pattern="[A-Za-z]" />
-            <p class="hint">Privacy: only the first letter of the child's last name.</p>
-            <p class="field-error" id="childLastInitial-error" aria-live="polite"></p>
+            <label for="childLastName">Child's last name<span class="req" aria-hidden="true">*</span></label>
+            <input id="childLastName" name="childLastName" type="text" required aria-required="true" />
+            <p class="field-error" id="childLastName-error" aria-live="polite"></p>
           </div>
         </div>
 
-        <div class="field-row three-col">
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="childNickname">Name the child goes by</label>
+            <input id="childNickname" name="childNickname" type="text" placeholder="Optional" />
+          </div>
+          <div class="field">
+            <label for="childCustodyCounty">Child's county of custody<span class="req" aria-hidden="true">*</span></label>
+            <input id="childCustodyCounty" name="childCustodyCounty" type="text" required aria-required="true" placeholder="e.g., Gaston, or York, SC" />
+            <p class="hint">NC counties: just the county name. Out-of-state: <strong>County, ST</strong>.</p>
+            <p class="field-error" id="childCustodyCounty-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="childDob">Date of birth<span class="req" aria-hidden="true">*</span></label>
+            <input id="childDob" name="childDob" type="date" required aria-required="true" />
+            <p class="hint">Auto-fills the age field.</p>
+            <p class="field-error" id="childDob-error" aria-live="polite"></p>
+          </div>
           <div class="field">
             <label for="childAge">Age<span class="req" aria-hidden="true">*</span></label>
             <input id="childAge" name="childAge" type="number" min="0" max="21" required aria-required="true" />
             <p class="field-error" id="childAge-error" aria-live="polite"></p>
           </div>
+        </div>
+
+        <div class="field-row two-col">
           <div class="field">
             <label for="childGradeFall">Grade this fall<span class="req" aria-hidden="true">*</span></label>
             <select id="childGradeFall" name="childGradeFall" required aria-required="true">
@@ -308,9 +840,8 @@
             <label for="childGender">Gender<span class="req" aria-hidden="true">*</span></label>
             <select id="childGender" name="childGender" required aria-required="true">
               <option value="">Select</option>
-              <option value="Female">Girl</option>
-              <option value="Male">Boy</option>
-              <option value="Non-binary">Non-binary / Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
             <p class="field-error" id="childGender-error" aria-live="polite"></p>
           </div>
@@ -321,28 +852,40 @@
             <label for="childPlacementType">Placement type<span class="req" aria-hidden="true">*</span></label>
             <select id="childPlacementType" name="childPlacementType" required aria-required="true">
               <option value="">Select</option>
-              <option>Foster</option>
-              <option>Foster - Group Home placement</option>
-              <option>Kinship</option>
-              <option>Adoptive</option>
-              <option>Biological</option>
-              <option>Other</option>
+              <option value="Foster - Single Family Home">Foster - Single Family Home</option>
+              <option value="Foster - Group Home placement">Foster - Group Home placement</option>
+              <option value="Kinship">Kinship</option>
+              <option value="Guardianship">Guardianship</option>
+              <option value="Other">Other</option>
             </select>
             <p class="field-error" id="childPlacementType-error" aria-live="polite"></p>
           </div>
           <div class="field">
-            <label for="childCustodyCounty">Child's county of custody<span class="req" aria-hidden="true">*</span></label>
-            <input id="childCustodyCounty" name="childCustodyCounty" type="text" required aria-required="true" placeholder="e.g., Gaston, or York, SC" />
-            <p class="field-error" id="childCustodyCounty-error" aria-live="polite"></p>
+            <label for="childEthnicity">Ethnicity<span class="req" aria-hidden="true">*</span></label>
+            <select id="childEthnicity" name="childEthnicity" required aria-required="true">
+              <option value="">Select</option>
+              <option value="African-American">African-American</option>
+              <option value="Asian">Asian</option>
+              <option value="Bi-Racial">Bi-Racial</option>
+              <option value="Caucasian">Caucasian</option>
+              <option value="Hawaiian or Pacific Islander">Hawaiian or Pacific Islander</option>
+              <option value="Hispanic">Hispanic</option>
+              <option value="Middle Eastern">Middle Eastern</option>
+              <option value="Multi-Racial">Multi-Racial</option>
+              <option value="Native American">Native American</option>
+              <option value="Don't Know/Prefer not to answer">Don't Know/Prefer not to answer</option>
+            </select>
+            <p class="field-error" id="childEthnicity-error" aria-live="polite"></p>
           </div>
         </div>
       </fieldset>
 
+      <!-- 6. Shoes -->
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">4</span>Shoes</legend>
+        <legend><span class="legend-num" aria-hidden="true">6</span>Shoes</legend>
         <p class="hint" style="margin-top:8px;">Choose the shoe category and size that best fits the child.</p>
 
-        <div class="field-row two-col">
+        <div class="field-row">
           <div class="field">
             <label for="shoeGender">Will you be choosing shoes for a girl or boy?<span class="req" aria-hidden="true">*</span></label>
             <select id="shoeGender" name="shoeGender" required aria-required="true">
@@ -354,7 +897,7 @@
           </div>
         </div>
 
-        <div class="field-row" id="girlShoeWrap" aria-hidden="true" hidden>
+        <div class="field-row hidden" id="girlShoeWrap">
           <div class="field">
             <label for="girlShoeSize">Girl shoe size<span class="req" aria-hidden="true">*</span></label>
             <select id="girlShoeSize" name="girlShoeSize">
@@ -405,7 +948,7 @@
           </div>
         </div>
 
-        <div class="field-row" id="boyShoeWrap" aria-hidden="true" hidden>
+        <div class="field-row hidden" id="boyShoeWrap">
           <div class="field">
             <label for="boyShoeSize">Boy shoe size<span class="req" aria-hidden="true">*</span></label>
             <select id="boyShoeSize" name="boyShoeSize">
@@ -461,15 +1004,17 @@
           <div class="field">
             <label for="specialtyShoeNotes">Specialty shoe needs (optional)</label>
             <textarea id="specialtyShoeNotes" name="specialtyShoeNotes" placeholder="e.g., wide, extra wide, Billy shoes, braces"></textarea>
-            <p class="hint">This is NOT for shoe colors or styles — only unusual sizing issues. If a child needs a specialty shoe we may need to order it after the event; they still come to the event for their other items.</p>
+            <p class="hint">This is NOT for shoe colors or styles — only unusual sizing issues. If a child needs a specialty shoe we may order it after the event; they still come to the event for their other items.</p>
           </div>
         </div>
       </fieldset>
 
+      <!-- 7. Underwear -->
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">5</span>Underwear</legend>
+        <legend><span class="legend-num" aria-hidden="true">7</span>Underwear</legend>
+        <p class="hint" style="margin-top:8px;">Please note we do not offer diapers at this event.</p>
 
-        <div class="field-row two-col">
+        <div class="field-row">
           <div class="field">
             <label for="underwearGender">Will you be choosing underwear for a girl or boy?<span class="req" aria-hidden="true">*</span></label>
             <select id="underwearGender" name="underwearGender" required aria-required="true">
@@ -481,7 +1026,7 @@
           </div>
         </div>
 
-        <div class="field-row" id="girlsUnderwearWrap" aria-hidden="true" hidden>
+        <div class="field-row hidden" id="girlsUnderwearWrap">
           <div class="field">
             <label for="girlsUnderwearSize">Girls underwear size<span class="req" aria-hidden="true">*</span></label>
             <select id="girlsUnderwearSize" name="girlsUnderwearSize">
@@ -515,7 +1060,7 @@
           </div>
         </div>
 
-        <div class="field-row" id="boysUnderwearWrap" aria-hidden="true" hidden>
+        <div class="field-row hidden" id="boysUnderwearWrap">
           <div class="field">
             <label for="boysUnderwearSize">Boys underwear size<span class="req" aria-hidden="true">*</span></label>
             <select id="boysUnderwearSize" name="boysUnderwearSize">
@@ -547,57 +1092,9 @@
         </div>
       </fieldset>
 
+      <!-- 8. Comments & consent -->
       <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">6</span>Social worker</legend>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="hasSocialWorker">Does the child have a DSS social worker?<span class="req" aria-hidden="true">*</span></label>
-            <select id="hasSocialWorker" name="hasSocialWorker" required aria-required="true">
-              <option value="">Select one</option>
-              <option>Yes</option>
-              <option>No</option>
-            </select>
-            <p class="field-error" id="hasSocialWorker-error" aria-live="polite"></p>
-          </div>
-        </div>
-
-        <div id="swWrap" aria-hidden="true" hidden>
-          <div class="field-row two-col">
-            <div class="field">
-              <label for="swFirstName">Social worker first name<span class="req" aria-hidden="true">*</span></label>
-              <input id="swFirstName" name="swFirstName" type="text" />
-              <p class="field-error" id="swFirstName-error" aria-live="polite"></p>
-            </div>
-            <div class="field">
-              <label for="swLastName">Social worker last name<span class="req" aria-hidden="true">*</span></label>
-              <input id="swLastName" name="swLastName" type="text" />
-              <p class="field-error" id="swLastName-error" aria-live="polite"></p>
-            </div>
-          </div>
-          <div class="field-row two-col">
-            <div class="field">
-              <label for="swEmail">Social worker email<span class="req" aria-hidden="true">*</span></label>
-              <input id="swEmail" name="swEmail" type="email" />
-              <p class="field-error" id="swEmail-error" aria-live="polite"></p>
-            </div>
-            <div class="field">
-              <label for="swPhone">Social worker phone</label>
-              <input id="swPhone" name="swPhone" type="tel" />
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="swCounty">Social worker county of employment<span class="req" aria-hidden="true">*</span></label>
-              <input id="swCounty" name="swCounty" type="text" />
-              <p class="field-error" id="swCounty-error" aria-live="polite"></p>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend><span class="legend-num" aria-hidden="true">7</span>Comments &amp; consent</legend>
+        <legend><span class="legend-num" aria-hidden="true">8</span>Comments &amp; consent</legend>
 
         <div class="field-row">
           <div class="field">
@@ -609,14 +1106,14 @@
         <div class="checkbox-row">
           <input id="agreeToTerms" name="agreeToTerms" type="checkbox" required aria-required="true" />
           <label for="agreeToTerms">
-            I confirm the information provided is accurate. I understand submitting this form does not guarantee a spot, and I agree to be contacted by Least of These Carolinas regarding this registration.<span class="req" aria-hidden="true">*</span>
+            By submitting this registration, I agree to receive text messages and/or emails from Least of These Carolinas regarding this registration. I confirm the information provided is accurate and understand submitting this form does not guarantee a spot.<span class="req" aria-hidden="true">*</span>
           </label>
         </div>
         <p class="field-error" id="agreeToTerms-error" aria-live="polite"></p>
       </fieldset>
 
       <div class="actions">
-        <button type="submit" id="submitBtn">Submit registration</button>
+        <button type="submit" class="btn" id="submitBtn">Submit registration</button>
       </div>
 
       <div id="form-status" class="status" role="status" aria-live="polite" hidden>
@@ -634,117 +1131,335 @@
     (function () {
       'use strict';
 
-      var form = document.getElementById('soh-form');
-      var statusEl = document.getElementById('form-status');
-      var statusText = document.getElementById('form-status-text');
-      var statusId = document.getElementById('form-status-id');
-      var submitBtn = document.getElementById('submitBtn');
+      var $ = function (id) { return document.getElementById(id); };
+      var form = $('soh-form');
+      var statusEl = $('form-status');
+      var statusText = $('form-status-text');
+      var statusId = $('form-status-id');
+      var submitBtn = $('submitBtn');
 
-      function show(el) {
-        el.hidden = false;
-        el.setAttribute('aria-hidden', 'false');
-      }
-      function hide(el) {
-        el.hidden = true;
-        el.setAttribute('aria-hidden', 'true');
+      function show(el) { if (el) el.classList.remove('hidden'); }
+      function hideAndClear(el) {
+        if (!el) return;
+        el.classList.add('hidden');
         el.querySelectorAll('input, select, textarea').forEach(function (f) {
-          f.value = '';
-          f.setAttribute('aria-required', 'false');
+          if (f.type === 'radio' || f.type === 'checkbox') { f.checked = false; }
+          else { f.value = ''; }
           f.required = false;
+          f.setAttribute('aria-required', 'false');
         });
       }
-      function requireIn(el) {
-        el.querySelectorAll('select, input[type="text"], input[type="email"], textarea').forEach(function (f) {
-          f.required = true;
-          f.setAttribute('aria-required', 'true');
-        });
+      function setReq(id, on) {
+        var f = $(id);
+        if (!f) return;
+        if (on) { f.required = true; f.setAttribute('aria-required', 'true'); }
+        else { f.required = false; f.setAttribute('aria-required', 'false'); }
       }
 
-      var girlShoeWrap = document.getElementById('girlShoeWrap');
-      var boyShoeWrap  = document.getElementById('boyShoeWrap');
-      document.getElementById('shoeGender').addEventListener('change', function (e) {
-        var v = e.target.value;
-        hide(girlShoeWrap); hide(boyShoeWrap);
-        if (v === 'Girl') { show(girlShoeWrap); requireIn(girlShoeWrap); }
-        if (v === 'Boy')  { show(boyShoeWrap);  requireIn(boyShoeWrap); }
+      /* ---------------- Mapbox config ---------------- */
+      var MAPBOX_ACCESS_TOKEN = null, MAPBOX_ADDRESS_TOKEN = null, MAPBOX_CONFIG_LOADED = false;
+      async function loadMapboxConfig() {
+        try {
+          var res = await fetch('/api/mapbox-config');
+          if (!res.ok) throw new Error('config');
+          var cfg = await res.json();
+          MAPBOX_ACCESS_TOKEN = cfg.accessToken;
+          MAPBOX_ADDRESS_TOKEN = cfg.addressToken;
+          MAPBOX_CONFIG_LOADED = true;
+        } catch (e) {
+          console.error('Mapbox config failed to load:', e);
+        }
+      }
+      loadMapboxConfig();
+
+      /* ---------------- Relationship → Other / Person Completing ---------------- */
+      var relationship = $('relationship');
+      var relOtherTypeGroup = $('relationshipOtherTypeGroup');
+      var relOtherCustomGroup = $('relationshipOtherCustomGroup');
+      var personSection = $('personCompletingSection');
+      var knowEmailQuestionGroup = $('knowEmailQuestionGroup');
+      var caregiverEmailGroup = $('caregiverEmailGroup');
+
+      function applyRelationship() {
+        var v = relationship.value;
+        // Caregiver email visibility
+        if (v === 'Caregiver') {
+          knowEmailQuestionGroup.classList.add('hidden');
+          show(caregiverEmailGroup);
+          setReq('caregiverEmail', true);
+          document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(function (r) { r.checked = false; r.required = false; });
+        } else {
+          knowEmailQuestionGroup.classList.remove('hidden');
+          caregiverEmailGroup.classList.add('hidden');
+          setReq('caregiverEmail', false);
+          $('caregiverEmail').value = '';
+          document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(function (r) { r.required = true; });
+        }
+        // Other reveal
+        if (v === 'Other') {
+          show(relOtherTypeGroup); setReq('relationshipOtherType', true);
+          show(personSection);
+          ['personCompletingFirstName', 'personCompletingLastName', 'personCompletingPhone', 'personCompletingTextable', 'personCompletingEmail'].forEach(function (id) { setReq(id, true); });
+        } else {
+          hideAndClear(relOtherTypeGroup);
+          hideAndClear(relOtherCustomGroup);
+          hideAndClear(personSection);
+          $('personCompletingAltPhoneGroup').classList.add('hidden');
+        }
+      }
+      relationship.addEventListener('change', applyRelationship);
+
+      $('relationshipOtherType').addEventListener('change', function () {
+        if (this.value === 'Other') { show(relOtherCustomGroup); setReq('relationshipOtherCustom', true); }
+        else { hideAndClear(relOtherCustomGroup); }
       });
 
-      var girlsUWrap = document.getElementById('girlsUnderwearWrap');
-      var boysUWrap  = document.getElementById('boysUnderwearWrap');
-      document.getElementById('underwearGender').addEventListener('change', function (e) {
-        var v = e.target.value;
-        hide(girlsUWrap); hide(boysUWrap);
-        if (v === 'Girl') { show(girlsUWrap); requireIn(girlsUWrap); }
-        if (v === 'Boy')  { show(boysUWrap);  requireIn(boysUWrap); }
+      $('personCompletingTextable').addEventListener('change', function () {
+        var g = $('personCompletingAltPhoneGroup');
+        if (this.value === 'No') { show(g); setReq('personCompletingAltPhone', true); }
+        else { hideAndClear(g); }
       });
 
+      document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          if (this.value === 'yes') { show(caregiverEmailGroup); setReq('caregiverEmail', true); }
+          else { caregiverEmailGroup.classList.add('hidden'); setReq('caregiverEmail', false); $('caregiverEmail').value = ''; }
+        });
+      });
+
+      /* ---------------- Caregiver no-mobile ---------------- */
+      $('noMobileNumber').addEventListener('change', function () {
+        var g = $('alternativePhoneGroup');
+        if (this.checked) { show(g); setReq('alternativePhone', true); setReq('caregiverPhone', false); $('caregiverPhone').value = ''; }
+        else { hideAndClear(g); setReq('caregiverPhone', true); }
+      });
+
+      /* ---------------- Licensed foster → licensing agency ---------------- */
+      $('isLicensedFoster').addEventListener('change', function () {
+        var g = $('licensingAgencyGroup');
+        if (this.value === 'Yes') { show(g); setReq('licensingAgency', true); }
+        else { hideAndClear(g); }
+      });
+      // Licensing agency filter
+      var licSearch = $('licensingAgencySearch'), licSelect = $('licensingAgency');
+      licSearch.addEventListener('input', function () {
+        var q = this.value.toLowerCase();
+        Array.prototype.forEach.call(licSelect.options, function (opt) {
+          if (!opt.value) return;
+          opt.hidden = q && opt.text.toLowerCase().indexOf(q) === -1;
+        });
+      });
+
+      /* ---------------- Social worker gate ---------------- */
+      $('hasSocialWorker').addEventListener('change', function () {
+        var w = $('swWrap');
+        if (this.value === 'Yes') {
+          show(w);
+          ['swFirstName', 'swLastName', 'swPhone', 'socialWorkerCanText', 'swEmail', 'socialWorkerCounty'].forEach(function (id) { setReq(id, true); });
+        } else {
+          hideAndClear(w);
+          $('alternativeSocialWorkerPhoneGroup').classList.add('hidden');
+          $('socialWorkerCountyOtherGroup').classList.add('hidden');
+        }
+      });
+
+      $('noSocialWorkerMobileNumber').addEventListener('change', function () {
+        var g = $('alternativeSocialWorkerPhoneGroup');
+        if (this.checked) { show(g); setReq('alternativeSocialWorkerPhone', true); setReq('swPhone', false); $('swPhone').value = ''; }
+        else { hideAndClear(g); setReq('swPhone', true); }
+      });
+
+      $('socialWorkerCounty').addEventListener('change', function () {
+        var g = $('socialWorkerCountyOtherGroup');
+        if (this.value === 'Other' || this.value === 'Other, XX' || this.value === 'Unknown, XX') { show(g); setReq('socialWorkerCountyOther', true); }
+        else { hideAndClear(g); }
+      });
+
+      /* ---------------- Grade bucket + age ---------------- */
       var gradeBucketMap = {
         'Not in School yet': 'No grade',
-        'Kindergarten': 'Elementary',
-        '1st': 'Elementary', '2nd': 'Elementary', '3rd': 'Elementary',
-        '4th': 'Elementary', '5th': 'Elementary',
+        'Kindergarten': 'Elementary', '1st': 'Elementary', '2nd': 'Elementary', '3rd': 'Elementary', '4th': 'Elementary', '5th': 'Elementary',
         '6th': 'Middle School', '7th': 'Middle School', '8th': 'Middle School',
-        '9th': 'High School', '10th': 'High School',
-        '11th': 'High School', '12th': 'High School'
+        '9th': 'High School', '10th': 'High School', '11th': 'High School', '12th': 'High School'
       };
-      var gradeBucketHint = document.getElementById('gradeBucketHint');
-      var gradeBucketInput = document.getElementById('gradeBucket');
-      document.getElementById('childGradeFall').addEventListener('change', function (e) {
+      $('childGradeFall').addEventListener('change', function (e) {
         var bucket = gradeBucketMap[e.target.value] || '';
-        gradeBucketInput.value = bucket;
-        gradeBucketHint.textContent = bucket ? 'School bucket: ' + bucket : '';
+        $('gradeBucket').value = bucket;
+        $('gradeBucketHint').textContent = bucket ? 'School bucket: ' + bucket : '';
+      });
+      $('childDob').addEventListener('change', function (e) {
+        var dob = e.target.value;
+        if (!dob) return;
+        var birth = new Date(dob + 'T00:00:00');
+        if (isNaN(birth.getTime())) return;
+        var now = new Date();
+        var age = now.getFullYear() - birth.getFullYear();
+        var m = now.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+        if (age >= 0 && age <= 21) $('childAge').value = age;
       });
 
-      var swWrap = document.getElementById('swWrap');
-      document.getElementById('hasSocialWorker').addEventListener('change', function (e) {
-        if (e.target.value === 'Yes') {
-          show(swWrap);
-          ['swFirstName','swLastName','swEmail','swCounty'].forEach(function (id) {
-            var f = document.getElementById(id);
-            f.required = true;
-            f.setAttribute('aria-required', 'true');
-          });
-        } else {
-          hide(swWrap);
+      /* ---------------- Shoe / underwear gender pickers ---------------- */
+      $('shoeGender').addEventListener('change', function (e) {
+        hideAndClear($('girlShoeWrap')); hideAndClear($('boyShoeWrap'));
+        if (e.target.value === 'Girl') { show($('girlShoeWrap')); setReq('girlShoeSize', true); }
+        if (e.target.value === 'Boy') { show($('boyShoeWrap')); setReq('boyShoeSize', true); }
+      });
+      $('underwearGender').addEventListener('change', function (e) {
+        hideAndClear($('girlsUnderwearWrap')); hideAndClear($('boysUnderwearWrap'));
+        if (e.target.value === 'Girl') { show($('girlsUnderwearWrap')); setReq('girlsUnderwearSize', true); }
+        if (e.target.value === 'Boy') { show($('boysUnderwearWrap')); setReq('boysUnderwearSize', true); }
+      });
+
+      /* ---------------- Address autocomplete (Mapbox) + manual fallback ---------------- */
+      var addrSearch = $('caregiverAddressSearch');
+      var addrSuggestions = $('caregiverAddressSuggestions');
+      var addrDisplay = $('caregiverAddressDisplay');
+      var addrText = $('caregiverAddressText');
+      var hStreet = $('caregiverStreet'), hZip = $('caregiverZip'), hCity = $('caregiverCity'), hState = $('caregiverState'), hCounty = $('caregiverCounty');
+      var manualSection = $('manualAddressSection'), manualToggle = $('manualAddressToggle');
+      var manualStreet = $('manualStreet'), manualZip = $('manualZip'), manualCity = $('manualCity'), manualState = $('manualState'), manualCounty = $('manualCounty');
+      var addrTimeout;
+
+      function clearCaregiverAddress() {
+        addrSearch.value = ''; addrDisplay.style.display = 'none';
+        hStreet.value = ''; hZip.value = ''; hCity.value = ''; hState.value = ''; hCounty.value = '';
+        addrSearch.style.display = 'block';
+        manualSection.style.display = 'none';
+        manualStreet.value = ''; manualZip.value = ''; manualCity.value = ''; manualState.value = '';
+        manualCounty.value = ''; manualCounty.readOnly = true; manualCounty.placeholder = 'Auto-fills from ZIP';
+        manualToggle.style.display = 'block';
+      }
+      $('clearCaregiverAddressBtn').addEventListener('click', clearCaregiverAddress);
+
+      addrSearch.addEventListener('input', function () {
+        var q = this.value.trim();
+        clearTimeout(addrTimeout);
+        if (q.length < 3) { addrSuggestions.style.display = 'none'; return; }
+        addrTimeout = setTimeout(async function () {
+          try {
+            if (!MAPBOX_CONFIG_LOADED) await loadMapboxConfig();
+            if (!MAPBOX_ADDRESS_TOKEN) return;
+            var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(q) + '.json?country=US&types=address&limit=5&access_token=' + MAPBOX_ADDRESS_TOKEN;
+            var resp = await fetch(url);
+            var data = await resp.json();
+            if (data.features && data.features.length) {
+              addrSuggestions.innerHTML = '';
+              addrSuggestions.style.display = 'block';
+              data.features.forEach(function (feature) {
+                var div = document.createElement('div');
+                div.textContent = feature.place_name;
+                div.addEventListener('click', function () { selectAddress(feature); });
+                addrSuggestions.appendChild(div);
+              });
+            } else { addrSuggestions.style.display = 'none'; }
+          } catch (err) { addrSuggestions.style.display = 'none'; }
+        }, 300);
+      });
+
+      function selectAddress(feature) {
+        var num = feature.address || '', streetName = feature.text || '';
+        var street = num ? (num + ' ' + streetName) : streetName;
+        var city = '', stateAbbr = '', zip = '', county = '';
+        (feature.context || []).forEach(function (ctx) {
+          if (ctx.id.indexOf('postcode') === 0) zip = ctx.text;
+          else if (ctx.id.indexOf('place') === 0) city = ctx.text;
+          else if (ctx.id.indexOf('region') === 0) stateAbbr = (ctx.short_code || '').replace('US-', '');
+          else if (ctx.id.indexOf('district') === 0) county = ctx.text.replace(/ County$/, '');
+        });
+        hStreet.value = street; hCity.value = city; hState.value = stateAbbr; hZip.value = zip; hCounty.value = county;
+        addrText.textContent = '';
+        [['Street', street], ['City', city], ['State', stateAbbr], ['ZIP', zip], ['County', county || 'N/A']].forEach(function (pair) {
+          var row = document.createElement('div');
+          var label = document.createElement('strong');
+          label.textContent = pair[0] + ': ';
+          row.appendChild(label);
+          row.appendChild(document.createTextNode(pair[1]));
+          addrText.appendChild(row);
+        });
+        addrDisplay.style.display = 'block';
+        addrSearch.style.display = 'none';
+        addrSuggestions.style.display = 'none';
+        manualToggle.style.display = 'none';
+        $('caregiverAddress-error').textContent = '';
+      }
+
+      document.addEventListener('click', function (e) {
+        if (e.target !== addrSearch && !addrSuggestions.contains(e.target)) addrSuggestions.style.display = 'none';
+      });
+
+      $('showManualEntry').addEventListener('click', function () {
+        addrSearch.style.display = 'none'; addrSuggestions.style.display = 'none';
+        manualToggle.style.display = 'none'; manualSection.style.display = 'block';
+      });
+      $('backToAddressSearch').addEventListener('click', function () {
+        clearCaregiverAddress();
+      });
+      manualStreet.addEventListener('input', function () { hStreet.value = this.value.trim(); });
+      manualCounty.addEventListener('input', function () { hCounty.value = this.value.trim(); });
+
+      async function getCountyFromZipCoords(lat, lng) {
+        try {
+          var resp = await fetch('/api/county-lookup?lat=' + lat + '&lon=' + lng);
+          if (resp.ok) {
+            var data = await resp.json();
+            if (data.results && data.results.length) return data.results[0].county_name || null;
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      manualZip.addEventListener('input', async function () {
+        var zip = this.value.trim();
+        if (zip.length < 5) {
+          manualCity.value = ''; manualState.value = ''; manualCounty.value = '';
+          manualCounty.readOnly = true; manualCounty.placeholder = 'Auto-fills from ZIP';
+          hZip.value = ''; hCity.value = ''; hState.value = ''; hCounty.value = '';
+          return;
+        }
+        if (/^\d{5}$/.test(zip)) {
+          hZip.value = zip;
+          try {
+            var r = await fetch('https://api.zippopotam.us/us/' + zip);
+            if (r.ok) {
+              var d = await r.json();
+              var city = d.places[0]['place name'], state = d.places[0]['state abbreviation'];
+              var lat = d.places[0]['latitude'], lng = d.places[0]['longitude'];
+              manualCity.value = city; manualState.value = state;
+              hCity.value = city; hState.value = state;
+              var county = await getCountyFromZipCoords(lat, lng);
+              if (county) {
+                var clean = county.replace(/ County$/, '');
+                manualCounty.value = clean; manualCounty.readOnly = true; hCounty.value = clean;
+              } else {
+                manualCounty.value = ''; manualCounty.readOnly = false; manualCounty.placeholder = 'Enter county name'; hCounty.value = '';
+              }
+            }
+          } catch (e) {}
         }
       });
 
+      /* ---------------- Validation + submit ---------------- */
       function setError(id, msg) {
-        var input = document.getElementById(id);
-        var err = document.getElementById(id + '-error');
-        if (msg) {
-          if (input) input.setAttribute('aria-invalid', 'true');
-          if (err) err.textContent = msg;
-        } else {
-          if (input) input.setAttribute('aria-invalid', 'false');
-          if (err) err.textContent = '';
-        }
+        var input = $(id), err = $(id + '-error');
+        if (msg) { if (input) input.setAttribute('aria-invalid', 'true'); if (err) err.textContent = msg; }
+        else { if (input) input.setAttribute('aria-invalid', 'false'); if (err) err.textContent = ''; }
       }
       function clearAllErrors() {
         document.querySelectorAll('.field-error').forEach(function (e) { e.textContent = ''; });
         document.querySelectorAll('[aria-invalid="true"]').forEach(function (i) { i.setAttribute('aria-invalid', 'false'); });
       }
-
       function generateSubmissionId() {
-        var now = new Date();
-        var pad = function (n) { return String(n).padStart(2, '0'); };
+        var now = new Date(), pad = function (n) { return String(n).padStart(2, '0'); };
         var d = '' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate());
         var t = '' + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds());
         var rand = Math.random().toString(36).substring(2, 6);
         return 'SOH-' + d + '-' + t + '-' + rand;
       }
-
       function setStatus(kind, text, idValue) {
-        statusEl.hidden = false;
-        statusEl.className = 'status ' + kind;
-        statusText.textContent = text;
-        if (idValue) {
-          statusId.hidden = false;
-          statusId.textContent = idValue;
-        } else {
-          statusId.hidden = true;
-          statusId.textContent = '';
-        }
+        statusEl.hidden = false; statusEl.className = 'status ' + kind; statusText.textContent = text;
+        if (idValue) { statusId.hidden = false; statusId.textContent = idValue; }
+        else { statusId.hidden = true; statusId.textContent = ''; }
       }
 
       form.addEventListener('submit', function (e) {
@@ -752,33 +1467,41 @@
         clearAllErrors();
         statusEl.hidden = true;
 
-        var missing = [];
-        var firstInvalid = null;
+        var missing = [], firstInvalid = null;
         Array.prototype.forEach.call(form.elements, function (el) {
-          if (!el.name) return;
-          if (el.disabled) return;
-          if (el.closest('[hidden]')) return;
-          if (el.type === 'checkbox') return;
+          if (!el.name || el.disabled) return;
+          if (el.type === 'hidden' || el.type === 'checkbox' || el.type === 'radio') return;
+          if (el.closest('.hidden')) return;
           if (el.required && !String(el.value || '').trim()) {
-            missing.push(el.id);
-            if (!firstInvalid) firstInvalid = el;
-            setError(el.id, 'Required.');
+            missing.push(el.id); if (!firstInvalid) firstInvalid = el; setError(el.id, 'Required.');
           } else if (el.type === 'email' && el.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)) {
-            missing.push(el.id);
-            if (!firstInvalid) firstInvalid = el;
-            setError(el.id, 'Enter a valid email.');
+            missing.push(el.id); if (!firstInvalid) firstInvalid = el; setError(el.id, 'Enter a valid email.');
           }
         });
 
-        if (!document.getElementById('agreeToTerms').checked) {
+        // know-email radios (when shown)
+        if (!knowEmailQuestionGroup.classList.contains('hidden')) {
+          var picked = document.querySelector('input[name="knowCaregiverEmail"]:checked');
+          if (!picked) { setError('knowCaregiverEmail', 'Required.'); missing.push('knowCaregiverEmail'); }
+        }
+
+        // Address completeness
+        if (!hStreet.value.trim() || !hCity.value.trim() || !hState.value.trim() || !hZip.value.trim()) {
+          setError('caregiverAddress', 'Please select or enter your full address.');
+          missing.push('caregiverAddress');
+          if (!firstInvalid) firstInvalid = addrSearch;
+        }
+
+        if (!$('agreeToTerms').checked) {
           setError('agreeToTerms', 'You must agree to continue.');
-          if (!firstInvalid) firstInvalid = document.getElementById('agreeToTerms');
+          if (!firstInvalid) firstInvalid = $('agreeToTerms');
           missing.push('agreeToTerms');
         }
 
         if (missing.length) {
           setStatus('error', 'Please complete all required fields and try again.');
           if (firstInvalid && firstInvalid.focus) firstInvalid.focus();
+          statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
 
@@ -786,29 +1509,31 @@
         new FormData(form).forEach(function (val, key) { payload[key] = val; });
         payload.submissionId = generateSubmissionId();
         payload.requestType = 'Shoes of Hope';
-        payload.agreeToTerms = document.getElementById('agreeToTerms').checked;
+        payload.agreeToTerms = $('agreeToTerms').checked;
+        payload.noMobileNumber = $('noMobileNumber').checked ? 'Yes' : 'No';
+        payload.noSocialWorkerMobileNumber = $('noSocialWorkerMobileNumber').checked ? 'Yes' : 'No';
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting…';
-        statusEl.hidden = true;
 
         fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload)
         })
           .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
           .then(function (result) {
             if (result.ok && result.body && result.body.success) {
-              setStatus(
-                'success',
-                'Thank you! Your registration was received. A confirmation email is on its way. Your confirmation ID is ',
-                result.body.submissionId
-              );
+              setStatus('success', 'Thank you! Your registration was received. A confirmation email is on its way. Your confirmation ID is ', result.body.submissionId);
               form.reset();
-              hide(girlShoeWrap); hide(boyShoeWrap);
-              hide(girlsUWrap); hide(boysUWrap);
-              hide(swWrap);
+              clearCaregiverAddress();
+              ['relationshipOtherTypeGroup', 'relationshipOtherCustomGroup', 'personCompletingSection', 'personCompletingAltPhoneGroup',
+               'alternativePhoneGroup', 'caregiverEmailGroup', 'licensingAgencyGroup', 'swWrap',
+               'alternativeSocialWorkerPhoneGroup', 'socialWorkerCountyOtherGroup',
+               'girlShoeWrap', 'boyShoeWrap', 'girlsUnderwearWrap', 'boysUnderwearWrap'].forEach(function (id) {
+                var el = $(id); if (el) el.classList.add('hidden');
+              });
+              knowEmailQuestionGroup.classList.remove('hidden');
               statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
               throw new Error((result.body && result.body.message) || 'Submission failed.');

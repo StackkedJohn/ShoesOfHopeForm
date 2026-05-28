@@ -19,20 +19,46 @@ function validate(formData) {
         'eventLocation',
         'relationship', 'isLicensedFoster',
         'caregiverFirstName', 'caregiverLastName',
-        'caregiverEmail', 'caregiverPhone',
-        'caregiverStreet', 'caregiverCity', 'caregiverState', 'caregiverZip', 'caregiverCounty',
-        'childFirstName', 'childLastInitial', 'childAge', 'childGender', 'childGradeFall',
-        'childPlacementType', 'childCustodyCounty',
+        'caregiverStreet', 'caregiverCity', 'caregiverState', 'caregiverZip',
+        'childFirstName', 'childLastName', 'childDob', 'childAge', 'childGender', 'childGradeFall',
+        'childPlacementType', 'childEthnicity', 'childCustodyCounty',
         'shoeGender', 'underwearGender',
         'hasSocialWorker', 'agreeToTerms',
     ];
+
+    if (formData.noMobileNumber === 'Yes') required.push('alternativePhone');
+    else required.push('caregiverPhone');
+
+    if (formData.relationship === 'Caregiver') {
+        required.push('caregiverEmail');
+    } else {
+        required.push('knowCaregiverEmail');
+        if (formData.knowCaregiverEmail === 'yes') required.push('caregiverEmail');
+    }
+
+    if (formData.relationship === 'Other') {
+        required.push('relationshipOtherType',
+            'personCompletingFirstName', 'personCompletingLastName',
+            'personCompletingTextable', 'personCompletingEmail');
+        if (formData.personCompletingTextable === 'No') required.push('personCompletingAltPhone');
+        else required.push('personCompletingPhone');
+        if (formData.relationshipOtherType === 'Other') required.push('relationshipOtherCustom');
+    }
+
+    if (formData.isLicensedFoster === 'Yes') required.push('licensingAgency');
 
     if (formData.shoeGender === 'Girl') required.push('girlShoeSize');
     if (formData.shoeGender === 'Boy') required.push('boyShoeSize');
     if (formData.underwearGender === 'Girl') required.push('girlsUnderwearSize');
     if (formData.underwearGender === 'Boy') required.push('boysUnderwearSize');
+
     if (formData.hasSocialWorker === 'Yes') {
-        required.push('swFirstName', 'swLastName', 'swEmail', 'swCounty');
+        required.push('swFirstName', 'swLastName', 'swEmail', 'socialWorkerCanText', 'socialWorkerCounty');
+        if (formData.noSocialWorkerMobileNumber === 'Yes') required.push('alternativeSocialWorkerPhone');
+        else required.push('swPhone');
+        if (['Other', 'Other, XX', 'Unknown, XX'].includes(formData.socialWorkerCounty)) {
+            required.push('socialWorkerCountyOther');
+        }
     }
 
     return required.filter((f) => {
@@ -89,9 +115,10 @@ module.exports = async (req, res) => {
         let emailResult = null;
         try {
             emailResult = await sendConfirmationEmail({
-                to: formData.caregiverEmail,
-                caregiverFirstName: formData.caregiverFirstName,
+                to: formData.caregiverEmail || formData.personCompletingEmail,
+                caregiverFirstName: formData.caregiverFirstName || formData.personCompletingFirstName,
                 childFirstName: formData.childFirstName,
+                eventLocation: formData.eventLocation,
                 submissionId,
             });
         } catch (emailError) {

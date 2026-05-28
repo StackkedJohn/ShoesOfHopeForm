@@ -43,7 +43,15 @@ class SupabaseService {
         try {
             const client = this.getClient();
 
-            const childLastInitial = (data.childLastInitial || '').slice(0, 1).toUpperCase() || null;
+            const childLastName = (data.childLastName || '').trim() || null;
+            const childLastInitial = childLastName
+                ? childLastName.charAt(0).toUpperCase()
+                : ((data.childLastInitial || '').slice(0, 1).toUpperCase() || null);
+
+            // Combine the "Other" relationship type + custom text into relationship_other
+            const relationshipOther = [data.relationshipOtherType, data.relationshipOtherCustom]
+                .filter((v) => v && String(v).trim())
+                .join(' — ') || null;
 
             const commentParts = [];
             if (data.specialtyShoeNotes && String(data.specialtyShoeNotes).trim()) {
@@ -61,12 +69,25 @@ class SupabaseService {
 
                 // Relationship
                 relationship: data.relationship || null,
+                relationship_other: relationshipOther,
+
+                // Person completing the form (when relationship = Other)
+                person_completing_first_name: data.personCompletingFirstName || null,
+                person_completing_middle_name: data.personCompletingMiddleName || null,
+                person_completing_last_name: data.personCompletingLastName || null,
+                person_completing_phone: data.personCompletingPhone || data.personCompletingAltPhone || null,
+                person_completing_textable: data.personCompletingTextable || null,
+                person_completing_email: data.personCompletingEmail || null,
 
                 // Caregiver
                 caregiver_first_name: data.caregiverFirstName || null,
+                caregiver_middle_name: data.caregiverMiddleName || null,
                 caregiver_last_name: data.caregiverLastName || null,
                 caregiver_email: data.caregiverEmail || null,
                 caregiver_phone: data.caregiverPhone || null,
+                caregiver_no_mobile: data.noMobileNumber || null,
+                alternative_phone: data.alternativePhone || null,
+                know_caregiver_email: data.knowCaregiverEmail || null,
                 caregiver_street: data.caregiverStreet || null,
                 caregiver_city: data.caregiverCity || null,
                 caregiver_state: data.caregiverState || null,
@@ -75,14 +96,23 @@ class SupabaseService {
 
                 // Foster status
                 is_licensed_foster: data.isLicensedFoster || null,
+                licensing_agency: data.licensingAgency || null,
 
                 // Social worker
                 has_social_worker_info: data.hasSocialWorker || null,
-                social_worker_first_name: data.swFirstName || null,
-                social_worker_last_name: data.swLastName || null,
-                social_worker_email: data.swEmail || null,
+                // These columns are NOT NULL in the shared submissions table.
+                // SOH makes the social worker optional (hasSocialWorker = No),
+                // so coalesce to '' (not null) to satisfy the constraint without DDL.
+                social_worker_first_name: data.swFirstName || '',
+                social_worker_middle_name: data.swMiddleName || null,
+                social_worker_last_name: data.swLastName || '',
+                social_worker_email: data.swEmail || '',
                 social_worker_phone: data.swPhone || null,
-                social_worker_county: data.swCounty || null,
+                social_worker_no_mobile: data.noSocialWorkerMobileNumber || null,
+                alternative_social_worker_phone: data.alternativeSocialWorkerPhone || null,
+                social_worker_can_text: data.socialWorkerCanText || null,
+                social_worker_county: data.socialWorkerCounty || '',
+                social_worker_county_other: data.socialWorkerCountyOther || null,
 
                 // Event location — caregiver picks Gaston or Rutherford
                 completion_contact: 'Caregiver',
@@ -90,10 +120,13 @@ class SupabaseService {
 
                 // Child
                 child_first_name: data.childFirstName || null,
+                child_last_name: childLastName,
                 child_last_initial: childLastInitial,
-                child_last_name: childLastInitial, // schema requires this; we only collect initial
+                child_nickname: data.childNickname || null,
+                child_dob: data.childDob || null,
                 child_age: data.childAge || null,
                 child_gender: data.childGender || null,
+                child_ethnicity: data.childEthnicity || '',
                 child_placement_type: data.childPlacementType || null,
                 child_custody_county: data.childCustodyCounty || null,
 

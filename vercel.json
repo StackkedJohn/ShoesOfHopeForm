@@ -2,10 +2,14 @@
   "version": 2,
   "builds": [
     { "src": "api/submit.js", "use": "@vercel/node" },
+    { "src": "api/mapbox-config.js", "use": "@vercel/node" },
+    { "src": "api/county-lookup.js", "use": "@vercel/node" },
     { "src": "index.html", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/submit", "dest": "/api/submit.js" },
+    { "src": "/api/mapbox-config", "dest": "/api/mapbox-config.js" },
+    { "src": "/api/county-lookup", "dest": "/api/county-lookup.js" },
     { "src": "/", "dest": "/index.html" },
     { "src": "/index.html", "dest": "/index.html" }
   ],

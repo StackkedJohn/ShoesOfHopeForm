@@ -15,9 +15,10 @@ function escape(str) {
         .replace(/"/g, '&quot;');
 }
 
-function renderHtml({ caregiverFirstName, childFirstName, submissionId }) {
+function renderHtml({ caregiverFirstName, childFirstName, eventLocation, submissionId }) {
     const greeting = caregiverFirstName ? `Hi ${escape(caregiverFirstName)},` : 'Hello,';
     const childName = childFirstName ? escape(childFirstName) : 'your child';
+    const location = eventLocation ? escape(eventLocation) : 'your selected location';
     const subId = escape(submissionId);
 
     return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -48,7 +49,7 @@ function renderHtml({ caregiverFirstName, childFirstName, submissionId }) {
 
               <p style="margin:0 0 14px 0;color:#4a4a4a;font-size:15px;line-height:24px;">${greeting}</p>
               <p style="margin:0 0 18px 0;color:#4a4a4a;font-size:15px;line-height:24px;">
-                Thank you for submitting a Shoes of Hope registration for <strong style="color:#060511;">${childName}</strong>. We've received your form and our team will review it shortly.
+                Thank you! We have received your registration for the <strong style="color:#060511;">Shoes of Hope</strong> event for <strong style="color:#060511;">${childName}</strong>. You have chosen to attend the event in <strong style="color:#060511;">${location}</strong>.
               </p>
 
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f7f7f5;border:1px solid #e5e5e5;border-radius:8px;margin:8px 0 20px 0;">
@@ -62,7 +63,7 @@ function renderHtml({ caregiverFirstName, childFirstName, submissionId }) {
                           <div style="width:22px;height:22px;border-radius:50%;background-color:#c22035;color:#ffffff;font-size:12px;font-weight:700;text-align:center;line-height:22px;">1</div>
                         </td>
                         <td valign="top" style="padding:0 0 12px 8px;color:#4a4a4a;font-size:14px;line-height:22px;">
-                          Our team reviews each registration. We'll reach out with next steps and a pickup location.
+                          You will receive a phone call soon to verify the information on your registration and schedule an appointment, if approved. Please save our number in your phone and answer when we call, if possible.
                         </td>
                       </tr>
                       <tr>
@@ -70,7 +71,7 @@ function renderHtml({ caregiverFirstName, childFirstName, submissionId }) {
                           <div style="width:22px;height:22px;border-radius:50%;background-color:#a7a8a3;color:#ffffff;font-size:12px;font-weight:700;text-align:center;line-height:22px;">2</div>
                         </td>
                         <td valign="top" style="padding:0 0 0 8px;color:#4a4a4a;font-size:14px;line-height:22px;">
-                          Submitting this form does <strong>not</strong> guarantee a spot. We confirm spots once we have stock that matches the child's size.
+                          Please be aware that the child is <strong>required to attend</strong> the event, as they will be picking out their own things! Submitting this form does not guarantee a spot.
                         </td>
                       </tr>
                     </table>
@@ -107,7 +108,7 @@ function renderHtml({ caregiverFirstName, childFirstName, submissionId }) {
 </html>`;
 }
 
-async function sendConfirmationEmail({ to, caregiverFirstName, childFirstName, submissionId }) {
+async function sendConfirmationEmail({ to, caregiverFirstName, childFirstName, eventLocation, submissionId }) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
         return { success: false, error: 'RESEND_API_KEY not configured' };
@@ -120,8 +121,8 @@ async function sendConfirmationEmail({ to, caregiverFirstName, childFirstName, s
         from: FROM_ADDRESS,
         to: [to],
         reply_to: REPLY_TO,
-        subject: 'We received your Shoes of Hope registration',
-        html: renderHtml({ caregiverFirstName, childFirstName, submissionId }),
+        subject: 'Least of These Carolinas SHOES OF HOPE Confirmation 2026',
+        html: renderHtml({ caregiverFirstName, childFirstName, eventLocation, submissionId }),
     };
 
     try {
